@@ -8,12 +8,145 @@ const SNARE = "SNARE";
 const BASS = "BASS";
 
 const FREQUENCY_TOLERANCE = 3;
-const MELODY = {
-  SNARE:         "----x-------x---",
-  HI_HAT:        "----------------",
-  HI_HAT_CLOSED: "x---x---x---x---",
-  BASS:          "x---------x-----"
+const MELODIES = {
+  PUNK_1: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x---x---x---x---",
+    SNARE:         "----x-------x---",
+    BASS:          "x---------x-----",
+    SPEED: 202,
+    TACT: () => 4/4
+  },
+  PUNK_2: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x---x---x---x---",
+    SNARE:         "----x-------x---",
+    BASS:          "x-----x---x-----",
+    SPEED: 202,
+    TACT: () => 4/4
+  },
+  PUNK_3: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x---x---x---x---",
+    SNARE:         "----x-------x---",
+    BASS:          "--x---x-x-------",
+    SPEED: 202,
+    TACT: () => 4/4
+  },
+  PUNK_4: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x---x---x---x---",
+    SNARE:         "----x-------x---",
+    BASS:          "x-x---x-x-x-----",
+    SPEED: 202,
+    TACT: () => 4/4
+  },
+  ROCK_1: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x---x---x---x---",
+    SNARE:         "----x-------x---",
+    BASS:          "x-------x-------",
+    SPEED: 132,
+    TACT: () => 4/4
+  },
+  ROCK_2: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x---x---x---x---",
+    SNARE:         "----x-------x---",
+    BASS:          "x---x---x---x---",
+    SPEED: 132,
+    TACT: () => 4/4
+  },
+  ROCK_3: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x---x---x---x---",
+    SNARE:         "----x-------x---",
+    BASS:          "x-----x-x-------",
+    SPEED: 132,
+    TACT: () => 4/4
+  },
+  ROCK_4: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x---x---x---x---",
+    SNARE:         "----x-------x---",
+    BASS:          "x-------x-x-----",
+    SPEED: 132,
+    TACT: () => 4/4
+  },
+  ROCK_8THS_1: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
+    SNARE:         "----x-------x---",
+    BASS:          "x-------x-----x-",
+    SPEED: 132,
+    TACT: () => 4/4
+  },
+  ROCK_8THS_2: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
+    SNARE:         "----x-------x---",
+    BASS:          "x-x-----x-x-----",
+    SPEED: 132,
+    TACT: () => 4/4
+  },
+  ROCK_8THS_3: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
+    SNARE:         "----x-------x---",
+    BASS:          "x-x---x-x-------",
+    SPEED: 132,
+    TACT: () => 4/4
+  },
+  ROCK_8THS_4: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
+    SNARE:         "----x-------x---",
+    BASS:          "x-x---x---x-----",
+    SPEED: 132,
+    TACT: () => 4/4
+  },
+  ROCK_SLOW_16THS_1: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
+    SNARE:         "----x-------x---",
+    BASS:          "x-----x-x-------",
+    SPEED: 80,
+    TACT: () => 4/4
+  },
+  ROCK_SLOW_16THS_2: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
+    SNARE:         "----x-------x---",
+    BASS:          "x------xx-------",
+    SPEED: 80,
+    TACT: () => 4/4
+  },
+  ROCK_SLOW_16THS_3: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
+    SNARE:         "----x-------x---",
+    BASS:          "x------xx-x-----",
+    SPEED: 80,
+    TACT: () => 4/4
+  },
+  ROCK_SLOW_16THS_4: {
+    HI_HAT:        "----------------",
+    HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
+    SNARE:         "----x-------x---",
+    BASS:          "x------xx-----x-",
+    SPEED: 80,
+    TACT: () => 4/4
+  },
+  ROCK_SLOW_12_8_1: {
+    HI_HAT:        "------------",
+    HI_HAT_CLOSED: "xxxxxxxxxxxx",
+    SNARE:         "---x-----x--",
+    BASS:          "x-----x-----",
+    SPEED: 60,
+    TACT: () => 12/8
+  }
 }
+
 
 function App() {
 
@@ -24,13 +157,15 @@ function App() {
   const matchHiHatClosed$ = useRef(new Subject()).current;
   const matchBass$ = useRef(new Subject()).current;
 
-  const [points, setPoints] = useState(0)
+  const [points, setPoints] = useState(0);
+  const [melody, setMelody] = useState("PUNK_1");
 
   const [raceHeight, setRaceHeight] = useState(0)
 
   const [isRecording, setIsRecording] = useState(false);
   const [isRunning, setIsRunning] = useState(true);
-  const [bpm, setBpm] = useState(200);
+  const [bpm, setBpm] = useState(202);
+  const [withMetronome, setWithMetronome] = useState(false);
 
   const [snareFreq, setSnareFreq] = useState(0);
   const [hiHatFreq, setHiHatFreq] = useState(0);
@@ -64,26 +199,32 @@ function App() {
 
   const [step, setStep] = useState(0);
 
+  useEffect(()=> {
+    if(withMetronome && step%4 === 0) {
+      beep();
+    }
+  })
+
   useEffect(() => {
     var additionalPoints = 0
-    if(matchedInstruments[HI_HAT] && MELODY[HI_HAT][step] === "x") {
+    if(matchedInstruments[HI_HAT] && MELODIES[melody][HI_HAT][step] === "x") {
       console.log("match hihat")
       additionalPoints = additionalPoints + 50
     }
-    if(matchedInstruments[HI_HAT_CLOSED] && MELODY[HI_HAT_CLOSED][step] === "x") {
+    if(matchedInstruments[HI_HAT_CLOSED] && MELODIES[melody][HI_HAT_CLOSED][step] === "x") {
       console.log("match hihat closed")
       additionalPoints = additionalPoints + 50
     }
-    if(matchedInstruments[SNARE] && MELODY[SNARE][step] === "x") {
+    if(matchedInstruments[SNARE] && MELODIES[melody][SNARE][step] === "x") {
       console.log("match snare")
       additionalPoints = additionalPoints + 50
     }
-    if(matchedInstruments[BASS] && MELODY[BASS][step] === "x") {
+    if(matchedInstruments[BASS] && MELODIES[melody][BASS][step] === "x") {
       console.log("match bass")
       additionalPoints = additionalPoints + 50
     }
     setPoints((points) => points + additionalPoints);
-  }, [step])
+  }, [step, melody])
 
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
@@ -140,54 +281,54 @@ function App() {
     matchHiHatClosed$.subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
     })
-    matchHiHatClosed$.pipe(delay(60000/bpm/4), debounceTime(60000/bpm/4)).subscribe((instrument) => {
+    matchHiHatClosed$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
     })
     matchHiHat$.subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
     })
-    matchHiHat$.pipe(delay(60000/bpm/4), debounceTime(60000/bpm/4)).subscribe((instrument) => {
+    matchHiHat$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
     })
     matchSnare$.subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
     })
-    matchSnare$.pipe(delay(60000/bpm/4), debounceTime(60000/bpm/4)).subscribe((instrument) => {
+    matchSnare$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
     })
     matchBass$.subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
     })
-    matchBass$.pipe(delay(60000/bpm/4), debounceTime(60000/bpm/4)).subscribe((instrument) => {
+    matchBass$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
     })
   }, [matchHiHatClosed$, matchHiHat$, matchSnare$, matchBass$])
 
   useEffect(() => {
 
-    const subscription = interval(60000/bpm/4).pipe(
+    const subscription = interval(60000/bpm/4*MELODIES[melody].TACT()).pipe(
       ).subscribe((i) => {
         if(isRunning) {
           const newAnimation = []
-          if(MELODY[SNARE][(i+1)%MELODY[SNARE].length] === "x") {
+          if(MELODIES[melody][SNARE][(i+1)%MELODIES[melody][SNARE].length] === "x") {
             newAnimation.push(SNARE);
           }
-          if(MELODY[HI_HAT][(i+1)%MELODY[HI_HAT].length] === "x") {
+          if(MELODIES[melody][HI_HAT][(i+1)%MELODIES[melody][HI_HAT].length] === "x") {
             newAnimation.push(HI_HAT);
           }
-          if(MELODY[HI_HAT_CLOSED][(i+1)%MELODY[HI_HAT_CLOSED].length] === "x") {
+          if(MELODIES[melody][HI_HAT_CLOSED][(i+1)%MELODIES[melody][HI_HAT_CLOSED].length] === "x") {
             newAnimation.push(HI_HAT_CLOSED);
           }
-          if(MELODY[BASS][(i+1)%MELODY[BASS].length] === "x") {
+          if(MELODIES[melody][BASS][(i+1)%MELODIES[melody][BASS].length] === "x") {
             newAnimation.push(BASS);
           }
-          setAnimation((animation) => ({...animation, ...{[(i+1)%MELODY[BASS].length]: newAnimation}}));
-          setStep((i+1)%MELODY[BASS].length);
+          setAnimation((animation) => ({...animation, ...{[(i+1)%MELODIES[melody][BASS].length]: newAnimation}}));
+          setStep((i+1)%MELODIES[melody][BASS].length);
         }
     })
     return () => subscription.unsubscribe();
         
-  },[bpm, isRunning] )
+  },[bpm, isRunning, melody] )
 
   const recordInstrument = (instrument) => {
     setIsRecording(true);
@@ -226,14 +367,19 @@ function App() {
     })
   }
 
+  const beep = () => {
+    const snd = new Audio("data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");  
+    snd.play();
+}
+
   const marbleStyle = (isHidden) => ({
-    transition: `all ${!isHidden?((60/bpm/4)*16):0}s linear`,
+    transition: `all ${!isHidden?((60/bpm/4*MELODIES[melody].TACT())*MELODIES[melody][HI_HAT].length):0}s linear`,
     transform: `translate(0px, ${!isHidden?(raceHeight):0}px)`,
     visibility: `${!isHidden ? "visible": "hidden"}`
   });
 
   const renderMarble = (instrument, renderStep, color) => {
-    const isHidden = ((renderStep === 0 && step === 15) && (animation[step].indexOf(instrument) >= 0)) 
+    const isHidden = ((renderStep === 0 && step === MELODIES[melody][HI_HAT].length-1) && (animation[step].indexOf(instrument) >= 0)) 
     || ((renderStep -1 === step) && (animation[renderStep-1].indexOf(instrument) >= 0)) 
     return (
       <div key={`${instrument}_${renderStep}`} style={marbleStyle(isHidden)} className={`shadow-sm shadow-slate-500 rounded-full w-14 h-14 ${color} absolute top-0`}></div>
@@ -241,13 +387,13 @@ function App() {
   }
 
   const lineStyle = (isHidden) => ({
-    transition: `all ${!isHidden?((60/bpm/4)*16):0}s linear`,
+    transition: `all ${!isHidden?((60/bpm/4*MELODIES[melody].TACT())*MELODIES[melody][HI_HAT].length):0}s linear`,
     transform: `translate(0px, ${!isHidden?(raceHeight):0}px)`,
     visibility: `${!isHidden ? "visible": "hidden"}`
   });
 
   const renderLine = (renderStep, text) => {
-    const isHidden = (renderStep === 0 && step === 15) || (renderStep -1 === step) 
+    const isHidden = (renderStep === 0 && step === MELODIES[melody][HI_HAT].length-1) || (renderStep -1 === step) 
     return (
       <div style={lineStyle(isHidden)} className='h-14 absolute top-0 w-full border-b-slate-300 border-b-2 border-t-slate-300 border-t-2 flex flex-row items-center justify-between '>
         <p className='text-3xl text-slate-300 ml-6'>{text}</p>
@@ -260,7 +406,7 @@ function App() {
     <div className='flex flex-col justify-between h-full'>
       <div id={"menu"} className={"h-20 w-full bg-gray-100 flex flex-row justify-between items-center gap-10 z-30"}>
         <div>
-          <p className='text-xl text-gray-500 ml-6'>Punkte: {points}</p>
+          <p className='text-xl text-gray-500 ml-6'>Punkte: <span className='text-blue-500'>{points}</span></p>
         </div>
         <div>
           <button onClick={() => setBpm(bpm-1)} className='text-gray-500 mr-3'>-</button>
@@ -268,7 +414,34 @@ function App() {
           <button onClick={() => setBpm(bpm+1)} className='text-gray-500 ml-3'>+</button>
           <span className='text-blue-500 ml-3'>{bpm} bpm</span>
         </div>
-        <div>
+        <div className={"bg-gray-100 flex flex-row justify-between items-center gap-10 z-30"}>
+          <label for="metronome" className="inline-flex relative items-center cursor-pointer">
+            <input onChange={() => setWithMetronome(!withMetronome)} type="checkbox" value="" id="metronome" className="sr-only peer"/>
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Metronome</span>
+          </label>
+          <select className={"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"} defaultValue={"PUNK_1"} onChange={(e) => {
+            setMelody(e.target.value);
+            setBpm(MELODIES[e.target.value].SPEED)
+          }}>
+            <option selected value={"PUNK_1"}>Punk 1</option>
+            <option value={"PUNK_2"}>Punk 2</option>
+            <option value={"PUNK_3"}>Punk 3</option>
+            <option value={"PUNK_4"}>Punk 4</option>
+            <option value={"ROCK_1"}>Rock 1</option>
+            <option value={"ROCK_2"}>Rock 2</option>
+            <option value={"ROCK_3"}>Rock 3</option>
+            <option value={"ROCK_4"}>Rock 4</option>
+            <option value={"ROCK_8THS_1"}>Rock 8ths 1</option>
+            <option value={"ROCK_8THS_2"}>Rock 8ths 2</option>
+            <option value={"ROCK_8THS_3"}>Rock 8ths 3</option>
+            <option value={"ROCK_8THS_4"}>Rock 8ths 4</option>
+            <option value={"ROCK_SLOW_16THS_1"}>Rock Slow 16ths 1</option>
+            <option value={"ROCK_SLOW_16THS_2"}>Rock Slow 16ths 2</option>
+            <option value={"ROCK_SLOW_16THS_3"}>Rock Slow 16ths 3</option>
+            <option value={"ROCK_SLOW_16THS_4"}>Rock Slow 16ths 4</option>
+            <option value={"ROCK_SLOW_12_8_1"}>Rock Slow 12/8 1</option>
+          </select>
           <button onClick={() => setIsRunning(!isRunning)} className="text-gray-500 rounded-full mr-6">
             {
               !isRunning
@@ -373,7 +546,7 @@ function App() {
       </div>
       <div id={"action"} className={"h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0"}>
         <div className='flex flex-row gap-5'>
-          <div onClick={() => recordInstrument(HI_HAT)} className={`transition-transform transform-gpu scale-x-${matchedInstruments[HI_HAT] ? "110 bg-yellow-400" : "100 bg-yellow-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
+          <div onClick={() => recordInstrument(HI_HAT)} className={`transition-transform transform-gpu scale-${matchedInstruments[HI_HAT] ? "110 bg-yellow-400" : "100 bg-yellow-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
             <p className="text-lg group-hover:hidden">Hi Hat</p>
             {
               hiHatFreq !== 0 
@@ -384,7 +557,7 @@ function App() {
             }
             <p className="text-lg hidden group-hover:block">Aufnehmen</p>
           </div>
-          <div onClick={() => recordInstrument(HI_HAT_CLOSED)} className={`transition-transform transform-gpu scale-x-${matchedInstruments[HI_HAT_CLOSED] ? "110 bg-yellow-400" : "100 bg-yellow-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
+          <div onClick={() => recordInstrument(HI_HAT_CLOSED)} className={`transition-transform transform-gpu scale-${matchedInstruments[HI_HAT_CLOSED] ? "110 bg-yellow-400" : "100 bg-yellow-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
             <p className="text-lg group-hover:hidden">Hi Hat Closed</p>
             {
               hiHatClosedFreq !== 0 
