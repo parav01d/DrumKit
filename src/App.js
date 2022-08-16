@@ -396,7 +396,7 @@ function App() {
             <p className="text-lg hidden group-hover:block">Aufnehmen</p>
           </div>
         </div>
-        <div onClick={() => recordInstrument(SNARE)} className={`transition-transform transform-gpu scale-x-${matchedInstruments[SNARE] ? "110 bg-green-400" : "100 bg-green-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
+        <div onClick={() => recordInstrument(SNARE)} className={`transition-transform transform-gpu scale-${matchedInstruments[SNARE] ? "110 bg-green-400" : "100 bg-green-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
           <p className="text-lg group-hover:hidden">Snare</p>
           {
             snareFreq !== 0 
@@ -407,7 +407,7 @@ function App() {
           }
           <p className="text-lg hidden group-hover:block">Aufnehmen</p>
         </div>
-        <div onClick={() => recordInstrument(BASS)} className={`transition-transform transform-gpu scale-x-${matchedInstruments[BASS] ? "110 bg-red-400" : "100 bg-red-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
+        <div onClick={() => recordInstrument(BASS)} className={`transition-transform transform-gpu scale-${matchedInstruments[BASS] ? "110 bg-red-400" : "100 bg-red-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
           <p className="text-lg group-hover:hidden">Bass</p>
           {
           
