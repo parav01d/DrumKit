@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import fft from "fft-js";
 import { debounceTime, delay, interval, reduce,  Subject, takeUntil, timer } from 'rxjs';
+import Confetti from 'react-confetti';
 
 const HI_HAT = "HI_HAT";
 const HI_HAT_CLOSED = "HI_HAT_CLOSED";
@@ -15,7 +16,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x---------x-----",
     SPEED: 202,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Punk 1"
   },
   PUNK_2: {
     HI_HAT:        "----------------",
@@ -23,7 +25,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-----x---x-----",
     SPEED: 202,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Punk 2"
   },
   PUNK_3: {
     HI_HAT:        "----------------",
@@ -31,7 +34,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "--x---x-x-------",
     SPEED: 202,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Punk 3"
   },
   PUNK_4: {
     HI_HAT:        "----------------",
@@ -39,7 +43,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-x---x-x-x-----",
     SPEED: 202,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Punk 4"
   },
   ROCK_1: {
     HI_HAT:        "----------------",
@@ -47,7 +52,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-------x-------",
     SPEED: 132,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock 1"
   },
   ROCK_2: {
     HI_HAT:        "----------------",
@@ -55,7 +61,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x---x---x---x---",
     SPEED: 132,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock 2"
   },
   ROCK_3: {
     HI_HAT:        "----------------",
@@ -63,7 +70,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-----x-x-------",
     SPEED: 132,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock 3"
   },
   ROCK_4: {
     HI_HAT:        "----------------",
@@ -71,7 +79,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-------x-x-----",
     SPEED: 132,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock 4"
   },
   ROCK_8THS_1: {
     HI_HAT:        "----------------",
@@ -79,7 +88,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-------x-----x-",
     SPEED: 132,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock 8ths 1"
   },
   ROCK_8THS_2: {
     HI_HAT:        "----------------",
@@ -87,7 +97,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-x-----x-x-----",
     SPEED: 132,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock 8ths 2"
   },
   ROCK_8THS_3: {
     HI_HAT:        "----------------",
@@ -95,7 +106,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-x---x-x-------",
     SPEED: 132,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock 8ths 3"
   },
   ROCK_8THS_4: {
     HI_HAT:        "----------------",
@@ -103,7 +115,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-x---x---x-----",
     SPEED: 132,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock 8ths 4"
   },
   ROCK_SLOW_16THS_1: {
     HI_HAT:        "----------------",
@@ -111,7 +124,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x-----x-x-------",
     SPEED: 80,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock Slow 16ths 1"
   },
   ROCK_SLOW_16THS_2: {
     HI_HAT:        "----------------",
@@ -119,7 +133,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x------xx-------",
     SPEED: 80,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock Slow 16ths 2"
   },
   ROCK_SLOW_16THS_3: {
     HI_HAT:        "----------------",
@@ -127,7 +142,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x------xx-x-----",
     SPEED: 80,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock Slow 16ths 3"
   },
   ROCK_SLOW_16THS_4: {
     HI_HAT:        "----------------",
@@ -135,7 +151,8 @@ const MELODIES = {
     SNARE:         "----x-------x---",
     BASS:          "x------xx-----x-",
     SPEED: 80,
-    TACT: () => 4/4
+    TACT: () => 4/4,
+    NAME: "Rock Slow 16ths 4"
   },
   ROCK_SLOW_12_8_1: {
     HI_HAT:        "------------",
@@ -143,7 +160,35 @@ const MELODIES = {
     SNARE:         "---x-----x--",
     BASS:          "x-----x-----",
     SPEED: 60,
-    TACT: () => 12/8
+    TACT: () => 12/8,
+    NAME: "Rock Slow 12/8 1"
+  },
+  ROCK_SLOW_12_8_2: {
+    HI_HAT:        "------------",
+    HI_HAT_CLOSED: "xxxxxxxxxxxx",
+    SNARE:         "---x-----x--",
+    BASS:          "x----xx-----",
+    SPEED: 60,
+    TACT: () => 12/8,
+    NAME: "Rock Slow 12/8 2"
+  },
+  ROCK_SLOW_12_8_3: {
+    HI_HAT:        "------------",
+    HI_HAT_CLOSED: "xxxxxxxxxxxx",
+    SNARE:         "---x-----x--",
+    BASS:          "x----xx----x",
+    SPEED: 60,
+    TACT: () => 12/8,
+    NAME: "Rock Slow 12/8 3"
+  },
+  ROCK_SLOW_12_8_4: {
+    HI_HAT:        "------------",
+    HI_HAT_CLOSED: "xxxxxxxxxxxx",
+    SNARE:         "---x-----x--",
+    BASS:          "x-x--xx-----",
+    SPEED: 60,
+    TACT: () => 12/8,
+    NAME: "Rock Slow 12/8 4"
   }
 }
 
@@ -152,12 +197,16 @@ function App() {
 
   const raceRef = useRef(null)
   const audioInput$ = useRef(new Subject()).current;
+
+
   const matchSnare$ = useRef(new Subject()).current;
   const matchHiHat$ = useRef(new Subject()).current;
   const matchHiHatClosed$ = useRef(new Subject()).current;
   const matchBass$ = useRef(new Subject()).current;
 
   const [points, setPoints] = useState(0);
+  const [hitVisualization, setHitVisualization] = useState([]);
+
   const [melody, setMelody] = useState("PUNK_1");
 
   const [raceHeight, setRaceHeight] = useState(0)
@@ -207,23 +256,25 @@ function App() {
 
   useEffect(() => {
     var additionalPoints = 0
+    const hitVisu = []
     if(matchedInstruments[HI_HAT] && MELODIES[melody][HI_HAT][step] === "x") {
-      console.log("match hihat")
       additionalPoints = additionalPoints + 50
+      hitVisu.push(HI_HAT);
     }
     if(matchedInstruments[HI_HAT_CLOSED] && MELODIES[melody][HI_HAT_CLOSED][step] === "x") {
-      console.log("match hihat closed")
       additionalPoints = additionalPoints + 50
+      hitVisu.push(HI_HAT_CLOSED);
     }
     if(matchedInstruments[SNARE] && MELODIES[melody][SNARE][step] === "x") {
-      console.log("match snare")
       additionalPoints = additionalPoints + 50
+      hitVisu.push(SNARE);
     }
     if(matchedInstruments[BASS] && MELODIES[melody][BASS][step] === "x") {
-      console.log("match bass")
       additionalPoints = additionalPoints + 50
+      hitVisu.push(BASS);
     }
     setPoints((points) => points + additionalPoints);
+    setHitVisualization(hitVisu);
   }, [step, melody])
 
   useEffect(() => {
@@ -424,23 +475,11 @@ function App() {
             setMelody(e.target.value);
             setBpm(MELODIES[e.target.value].SPEED)
           }}>
-            <option selected value={"PUNK_1"}>Punk 1</option>
-            <option value={"PUNK_2"}>Punk 2</option>
-            <option value={"PUNK_3"}>Punk 3</option>
-            <option value={"PUNK_4"}>Punk 4</option>
-            <option value={"ROCK_1"}>Rock 1</option>
-            <option value={"ROCK_2"}>Rock 2</option>
-            <option value={"ROCK_3"}>Rock 3</option>
-            <option value={"ROCK_4"}>Rock 4</option>
-            <option value={"ROCK_8THS_1"}>Rock 8ths 1</option>
-            <option value={"ROCK_8THS_2"}>Rock 8ths 2</option>
-            <option value={"ROCK_8THS_3"}>Rock 8ths 3</option>
-            <option value={"ROCK_8THS_4"}>Rock 8ths 4</option>
-            <option value={"ROCK_SLOW_16THS_1"}>Rock Slow 16ths 1</option>
-            <option value={"ROCK_SLOW_16THS_2"}>Rock Slow 16ths 2</option>
-            <option value={"ROCK_SLOW_16THS_3"}>Rock Slow 16ths 3</option>
-            <option value={"ROCK_SLOW_16THS_4"}>Rock Slow 16ths 4</option>
-            <option value={"ROCK_SLOW_12_8_1"}>Rock Slow 12/8 1</option>
+            {
+              Object.keys(MELODIES).map((key)=>(
+                <option value={key}>{MELODIES[key].NAME}</option>
+              ))
+            }
           </select>
           <button onClick={() => setIsRunning(!isRunning)} className="text-gray-500 rounded-full mr-6">
             {
@@ -544,53 +583,94 @@ function App() {
           {renderMarble(BASS, 15, 'bg-red-300')}
         </div>
       </div>
+      <div className={"h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0"}>
+        <div className='flex flex-row gap-5'>
+            <div className='h-32 w-32 text-right'>
+            {
+              hitVisualization.indexOf(HI_HAT) >= 0
+                ? (
+                  <span className="z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-yellow-500 relative inline-block">
+                    <span className="relative text-white font-normal font-serif">HIT!</span>
+                  </span>
+                )
+                : null
+            }
+              
+            </div>
+            <div className='h-32 w-32 text-right'>
+            {
+              hitVisualization.indexOf(HI_HAT_CLOSED) >= 0
+                ? (
+                  <span className="z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-yellow-500 relative inline-block">
+                    <span className="relative text-white font-normal font-serif">HIT!</span>
+                  </span>
+                )
+                : null
+            }
+            </div>
+        </div>
+        <div className='h-32 w-32 text-right'>
+        {
+          hitVisualization.indexOf(SNARE) >= 0
+            ? (
+              <span className="z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block">
+                <span className="relative text-white font-normal font-serif">HIT!</span>
+              </span>
+            )
+            : null
+        }
+          
+        </div>
+        <div className='h-32 w-32 text-right'>
+        {
+          hitVisualization.indexOf(BASS) >= 0
+            ? (
+              <span className="z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-red-500 relative inline-block">
+                <span className="relative text-white font-normal font-serif">HIT!</span>
+              </span>
+            )
+            : null
+        }
+        </div>
+      </div>
       <div id={"action"} className={"h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0"}>
         <div className='flex flex-row gap-5'>
           <div onClick={() => recordInstrument(HI_HAT)} className={`transition-transform transform-gpu scale-${matchedInstruments[HI_HAT] ? "110 bg-yellow-400" : "100 bg-yellow-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
-            <p className="text-lg group-hover:hidden">Hi Hat</p>
-            {
-              hiHatFreq !== 0 
-              ? (<>
-                <p className="text-sm group-hover:hidden">{hiHatFreq} Hz</p>
-              </>)
-              : (<p className="text-lg group-hover:hidden">Aufnehmen</p>)
-            }
-            <p className="text-lg hidden group-hover:block">Aufnehmen</p>
+            <img src='hi-hat.png' alt='hi-hat' className="object-contain h-20 w-20 mt-1" />
+              {
+                hiHatFreq === 0 
+                ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
+                : null
+              }
+            <p className="text-sm hidden group-hover:block">Aufnehmen</p>
           </div>
           <div onClick={() => recordInstrument(HI_HAT_CLOSED)} className={`transition-transform transform-gpu scale-${matchedInstruments[HI_HAT_CLOSED] ? "110 bg-yellow-400" : "100 bg-yellow-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
-            <p className="text-lg group-hover:hidden">Hi Hat Closed</p>
+          <img src='hi-hat-closed.png' alt='hi-hat-closed' className="object-contain h-20 w-20 mt-1" />
             {
-              hiHatClosedFreq !== 0 
-              ? (<>
-                <p className="text-sm group-hover:hidden">{hiHatClosedFreq} Hz</p>
-              </>)
-              : (<p className="text-lg group-hover:hidden">Aufnehmen</p>)
+              hiHatClosedFreq === 0 
+              ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
+              : null
             }
-            <p className="text-lg hidden group-hover:block">Aufnehmen</p>
+            <p className="text-sm hidden group-hover:block">Aufnehmen</p>
           </div>
         </div>
         <div onClick={() => recordInstrument(SNARE)} className={`transition-transform transform-gpu scale-${matchedInstruments[SNARE] ? "110 bg-green-400" : "100 bg-green-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
-          <p className="text-lg group-hover:hidden">Snare</p>
-          {
-            snareFreq !== 0 
-            ? (<>
-              <p className="text-sm group-hover:hidden">{snareFreq} Hz</p>
-            </>)
-            : (<p className="text-lg group-hover:hidden">Aufnehmen</p>)
+        <img src='snare-drum.png' alt='snare-drum' className="object-contain h-20 w-20 mt-1" />
+        {
+            snareFreq === 0 
+            ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
+            : null
           }
-          <p className="text-lg hidden group-hover:block">Aufnehmen</p>
+          <p className="text-sm hidden group-hover:block">Aufnehmen</p>
         </div>
         <div onClick={() => recordInstrument(BASS)} className={`transition-transform transform-gpu scale-${matchedInstruments[BASS] ? "110 bg-red-400" : "100 bg-red-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
-          <p className="text-lg group-hover:hidden">Bass</p>
+          <img src='bass-drum.png' alt='bass-drum' className="object-contain h-20 w-20 mt-1" />
           {
-          
-            bassFreq !== 0 
-            ? (<>
-              <p className="text-sm group-hover:hidden">{bassFreq} Hz</p>
-            </>)
-            : (<p className="text-lg group-hover:hidden">Aufnehmen</p>)
+            bassFreq === 0 
+            ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
+            : null
           }
-          <p className="text-lg hidden group-hover:block">Aufnehmen</p>
+          <p className="text-sm hidden group-hover:block">Aufnehmen</p>
         </div>
       </div>
       {
