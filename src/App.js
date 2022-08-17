@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import fft from "fft-js";
 import { debounceTime, delay, interval, reduce,  Subject, takeUntil, timer } from 'rxjs';
-import Confetti from 'react-confetti';
 
 const HI_HAT = "HI_HAT";
 const HI_HAT_CLOSED = "HI_HAT_CLOSED";
@@ -198,14 +197,17 @@ function App() {
   const raceRef = useRef(null)
   const audioInput$ = useRef(new Subject()).current;
 
-
   const matchSnare$ = useRef(new Subject()).current;
   const matchHiHat$ = useRef(new Subject()).current;
   const matchHiHatClosed$ = useRef(new Subject()).current;
   const matchBass$ = useRef(new Subject()).current;
 
+  const scoreSnare$ = useRef(new Subject()).current;
+  const scoreHiHat$ = useRef(new Subject()).current;
+  const scoreHiHatClosed$ = useRef(new Subject()).current;
+  const scoreBass$ = useRef(new Subject()).current;
+  
   const [points, setPoints] = useState(0);
-  const [hitVisualization, setHitVisualization] = useState([]);
 
   const [melody, setMelody] = useState("PUNK_1");
 
@@ -245,6 +247,13 @@ function App() {
     [SNARE]: false,
     [BASS]: false
   })
+  const [scoredInstruments, setScoredInstruments] = useState({
+    [HI_HAT]: false,
+    [HI_HAT_CLOSED]: false,
+    [SNARE]: false,
+    [BASS]: false
+  })
+
 
   const [step, setStep] = useState(0);
 
@@ -256,25 +265,24 @@ function App() {
 
   useEffect(() => {
     var additionalPoints = 0
-    const hitVisu = []
+
     if(matchedInstruments[HI_HAT] && MELODIES[melody][HI_HAT][step] === "x") {
       additionalPoints = additionalPoints + 50
-      hitVisu.push(HI_HAT);
+      scoreHiHat$.next(HI_HAT)
     }
     if(matchedInstruments[HI_HAT_CLOSED] && MELODIES[melody][HI_HAT_CLOSED][step] === "x") {
       additionalPoints = additionalPoints + 50
-      hitVisu.push(HI_HAT_CLOSED);
+      scoreHiHatClosed$.next(HI_HAT_CLOSED)
     }
     if(matchedInstruments[SNARE] && MELODIES[melody][SNARE][step] === "x") {
       additionalPoints = additionalPoints + 50
-      hitVisu.push(SNARE);
+      scoreSnare$.next(SNARE)
     }
     if(matchedInstruments[BASS] && MELODIES[melody][BASS][step] === "x") {
       additionalPoints = additionalPoints + 50
-      hitVisu.push(BASS);
+      scoreBass$.next(BASS);
     }
     setPoints((points) => points + additionalPoints);
-    setHitVisualization(hitVisu);
   }, [step, melody])
 
   useEffect(() => {
@@ -328,6 +336,33 @@ function App() {
       });
   }, [bassFreq, snareFreq, hiHatClosedFreq, hiHatFreq])
   
+  useEffect(() => {
+    scoreHiHatClosed$.subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
+    })
+    scoreHiHatClosed$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
+    })
+    scoreHiHat$.subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
+    })
+    scoreHiHat$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
+    })
+    scoreSnare$.subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
+    })
+    scoreSnare$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
+    })
+    scoreBass$.subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
+    })
+    scoreBass$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
+    })
+  }, [bpm, melody])
+
   useEffect(() => {
     matchHiHatClosed$.subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
@@ -585,52 +620,26 @@ function App() {
       </div>
       <div className={"h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0"}>
         <div className='flex flex-row gap-5'>
-            <div className='h-32 w-32 text-right'>
-            {
-              hitVisualization.indexOf(HI_HAT) >= 0
-                ? (
-                  <span className="z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-yellow-500 relative inline-block">
-                    <span className="relative text-white font-normal font-serif">HIT!</span>
-                  </span>
-                )
-                : null
-            }
-              
-            </div>
-            <div className='h-32 w-32 text-right'>
-            {
-              hitVisualization.indexOf(HI_HAT_CLOSED) >= 0
-                ? (
-                  <span className="z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-yellow-500 relative inline-block">
-                    <span className="relative text-white font-normal font-serif">HIT!</span>
-                  </span>
-                )
-                : null
-            }
-            </div>
+          <div className='h-32 w-32 text-right'>
+            <span className={`${scoredInstruments[HI_HAT]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
+              <span className="relative text-white text-xl font-normal font-serif">success!</span>
+            </span>
+          </div>
+          <div className='h-32 w-32 text-right'>
+            <span className={`${scoredInstruments[HI_HAT_CLOSED] ? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
+              <span className="relative text-white text-xl font-normal font-serif">success!</span>
+            </span>
+          </div>
         </div>
         <div className='h-32 w-32 text-right'>
-        {
-          hitVisualization.indexOf(SNARE) >= 0
-            ? (
-              <span className="z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block">
-                <span className="relative text-white font-normal font-serif">HIT!</span>
-              </span>
-            )
-            : null
-        }
-          
+          <span className={`${scoredInstruments[SNARE] ? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
+            <span className="relative text-white text-xl font-normal font-serif">success!</span>
+          </span>
         </div>
         <div className='h-32 w-32 text-right'>
-        {
-          hitVisualization.indexOf(BASS) >= 0
-            ? (
-              <span className="z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-red-500 relative inline-block">
-                <span className="relative text-white font-normal font-serif">HIT!</span>
-              </span>
-            )
-            : null
-        }
+          <span className={`${scoredInstruments[BASS]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
+            <span className="relative text-white text-xl font-normal font-serif">success!</span>
+          </span>
         </div>
       </div>
       <div id={"action"} className={"h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0"}>
