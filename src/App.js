@@ -5,7 +5,9 @@ import { debounceTime, delay, interval, reduce,  Subject, takeUntil, timer } fro
 const HI_HAT = "HI_HAT";
 const HI_HAT_CLOSED = "HI_HAT_CLOSED";
 const SNARE = "SNARE";
+const HIGH_TOM = "HIGH_TOM";
 const BASS = "BASS";
+const MEDIUM_TOM = "MEDIUM_TOM";
 const FLOOR_TOM = "FLOOR_TOM";
 
 const FREQUENCY_TOLERANCE = 3;
@@ -14,7 +16,9 @@ const MELODIES = {
     HI_HAT:        "--x---x---x---x-",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "--x----x---x---x",
     BASS:          "x--x---x------x-",
+    MEDIUM_TOM:    "---x-----x-x----",
     FLOOR_TOM:     "--x---x----x----",
     SPEED: 202,
     TACT: () => 4/4,
@@ -24,7 +28,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x---------x-----",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
@@ -34,7 +40,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-----x---x-----",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
@@ -44,7 +52,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "--x---x-x-------",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
@@ -54,7 +64,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-x---x-x-x-----",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
@@ -64,7 +76,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-------x-------",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
@@ -74,7 +88,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x---x---x---x---",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
@@ -84,7 +100,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-----x-x-------",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
@@ -94,7 +112,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-------x-x-----",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
@@ -104,7 +124,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-------x-----x-",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
@@ -114,7 +136,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-x-----x-x-----",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
@@ -124,7 +148,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-x---x-x-------",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
@@ -134,7 +160,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-x---x---x-----",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
@@ -144,7 +172,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x-----x-x-------",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
@@ -154,7 +184,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x------xx-------",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
@@ -164,7 +196,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x------xx-x-----",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
@@ -174,7 +208,9 @@ const MELODIES = {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
+    HIGH_TOM:      "----------------",
     BASS:          "x------xx-----x-",
+    MEDIUM_TOM:    "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
@@ -184,7 +220,9 @@ const MELODIES = {
     HI_HAT:        "------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
+    HIGH_TOM:      "------------",
     BASS:          "x-----x-----",
+    MEDIUM_TOM:    "------------",
     FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
@@ -194,7 +232,9 @@ const MELODIES = {
     HI_HAT:        "------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
+    HIGH_TOM:      "------------",
     BASS:          "x----xx-----",
+    MEDIUM_TOM:    "------------",
     FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
@@ -204,7 +244,9 @@ const MELODIES = {
     HI_HAT:        "------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
+    HIGH_TOM:      "------------",
     BASS:          "x----xx----x",
+    MEDIUM_TOM:    "------------",
     FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
@@ -214,7 +256,9 @@ const MELODIES = {
     HI_HAT:        "------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
+    HIGH_TOM:      "------------",
     BASS:          "x-x--xx-----",
+    MEDIUM_TOM:    "------------",
     FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
@@ -231,13 +275,17 @@ function App() {
   const matchSnare$ = useRef(new Subject()).current;
   const matchHiHat$ = useRef(new Subject()).current;
   const matchHiHatClosed$ = useRef(new Subject()).current;
+  const matchHighTom$ = useRef(new Subject()).current;
   const matchBass$ = useRef(new Subject()).current;
+  const matchMediumTom$ = useRef(new Subject()).current;
   const matchFloorTom$ = useRef(new Subject()).current;
 
   const scoreSnare$ = useRef(new Subject()).current;
   const scoreHiHat$ = useRef(new Subject()).current;
   const scoreHiHatClosed$ = useRef(new Subject()).current;
+  const scoreHighTom$ = useRef(new Subject()).current;
   const scoreBass$ = useRef(new Subject()).current;
+  const scoreMediumTom$ = useRef(new Subject()).current;
   const scoreFloorTom$ = useRef(new Subject()).current;
   
   const [points, setPoints] = useState(0);
@@ -254,7 +302,9 @@ function App() {
   const [snareFreq, setSnareFreq] = useState(0);
   const [hiHatFreq, setHiHatFreq] = useState(0);
   const [hiHatClosedFreq, setHiHatClosedFreq] = useState(0);
+  const [highTomFreq, setHighTomFreq] = useState(0);
   const [bassFreq, setBassFreq] = useState(0);
+  const [mediumTomFreq, setMediumTomFreq] = useState(0);
   const [floorTomFreq, setFloorTomFreq] = useState(0);
 
   const [animation, setAnimation] = useState({
@@ -279,14 +329,18 @@ function App() {
     [HI_HAT]: false,
     [HI_HAT_CLOSED]: false,
     [SNARE]: false,
+    [HIGH_TOM]: false,
     [BASS]: false,
+    [MEDIUM_TOM]: false,
     [FLOOR_TOM]: false
   })
   const [scoredInstruments, setScoredInstruments] = useState({
     [HI_HAT]: false,
     [HI_HAT_CLOSED]: false,
     [SNARE]: false,
+    [HIGH_TOM]: false,
     [BASS]: false,
+    [MEDIUM_TOM]: false,
     [FLOOR_TOM]: false
   })
 
@@ -314,9 +368,17 @@ function App() {
       additionalPoints = additionalPoints + 50
       scoreSnare$.next(SNARE)
     }
+    if(matchedInstruments[HIGH_TOM] && MELODIES[melody][HIGH_TOM][step] === "x") {
+      additionalPoints = additionalPoints + 50
+      scoreBass$.next(HIGH_TOM);
+    }
     if(matchedInstruments[BASS] && MELODIES[melody][BASS][step] === "x") {
       additionalPoints = additionalPoints + 50
       scoreBass$.next(BASS);
+    }
+    if(matchedInstruments[MEDIUM_TOM] && MELODIES[melody][MEDIUM_TOM][step] === "x") {
+      additionalPoints = additionalPoints + 50
+      scoreBass$.next(MEDIUM_TOM);
     }
     if(matchedInstruments[FLOOR_TOM] && MELODIES[melody][FLOOR_TOM][step] === "x") {
       additionalPoints = additionalPoints + 50
@@ -369,15 +431,21 @@ function App() {
           if(frequency <= snareFreq + FREQUENCY_TOLERANCE && frequency >= snareFreq - FREQUENCY_TOLERANCE) {
             matchSnare$.next(SNARE);
           }
+          if(frequency <= highTomFreq + FREQUENCY_TOLERANCE && frequency >= highTomFreq - FREQUENCY_TOLERANCE) {
+            matchBass$.next(HIGH_TOM);
+          }
           if(frequency <= bassFreq + FREQUENCY_TOLERANCE && frequency >= bassFreq - FREQUENCY_TOLERANCE) {
             matchBass$.next(BASS);
+          }
+          if(frequency <= mediumTomFreq + FREQUENCY_TOLERANCE && frequency >= mediumTomFreq - FREQUENCY_TOLERANCE) {
+            matchBass$.next(MEDIUM_TOM);
           }
           if(frequency <= floorTomFreq + FREQUENCY_TOLERANCE && frequency >= floorTomFreq - FREQUENCY_TOLERANCE) {
             matchFloorTom$.next(FLOOR_TOM);
           }
         }
       });
-  }, [bassFreq, snareFreq, hiHatClosedFreq, hiHatFreq, floorTomFreq])
+  }, [bassFreq, snareFreq, hiHatClosedFreq, hiHatFreq, floorTomFreq, highTomFreq, mediumTomFreq])
   
   useEffect(() => {
     scoreHiHatClosed$.subscribe((instrument) => {
@@ -398,10 +466,22 @@ function App() {
     scoreSnare$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
     })
+    scoreHighTom$.subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
+    })
+    scoreHighTom$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
+    })
     scoreBass$.subscribe((instrument) => {
       setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
     })
     scoreBass$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
+    })
+    scoreMediumTom$.subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
+    })
+    scoreMediumTom$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
     })
     scoreFloorTom$.subscribe((instrument) => {
@@ -431,6 +511,12 @@ function App() {
     matchSnare$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
     })
+    matchHighTom$.subscribe((instrument) => {
+      setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
+    })
+    matchHighTom$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
+    })
     matchBass$.subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
     })
@@ -443,7 +529,7 @@ function App() {
     matchFloorTom$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
     })
-  }, [matchHiHatClosed$, matchHiHat$, matchSnare$, matchBass$, matchFloorTom$])
+  }, [matchHiHatClosed$, matchHiHat$, matchSnare$, matchBass$, matchFloorTom$, matchHighTom$, matchMediumTom$])
 
   useEffect(() => {
 
@@ -460,8 +546,14 @@ function App() {
           if(MELODIES[melody][HI_HAT_CLOSED][(i+1)%MELODIES[melody][HI_HAT_CLOSED].length] === "x") {
             newAnimation.push(HI_HAT_CLOSED);
           }
+          if(MELODIES[melody][HIGH_TOM][(i+1)%MELODIES[melody][HIGH_TOM].length] === "x") {
+            newAnimation.push(HIGH_TOM);
+          }
           if(MELODIES[melody][BASS][(i+1)%MELODIES[melody][BASS].length] === "x") {
             newAnimation.push(BASS);
+          }
+          if(MELODIES[melody][MEDIUM_TOM][(i+1)%MELODIES[melody][MEDIUM_TOM].length] === "x") {
+            newAnimation.push(MEDIUM_TOM);
           }
           if(MELODIES[melody][FLOOR_TOM][(i+1)%MELODIES[melody][FLOOR_TOM].length] === "x") {
             newAnimation.push(FLOOR_TOM);
@@ -502,8 +594,14 @@ function App() {
           case SNARE:
             setSnareFreq(parseInt(both.frequency));
             break;
+          case HIGH_TOM:
+            setHighTomFreq(parseInt(both.frequency));
+            break;
           case BASS:
             setBassFreq(parseInt(both.frequency));
+            break;
+          case MEDIUM_TOM:
+            setMediumTomFreq(parseInt(both.frequency));
             break;
           case FLOOR_TOM:
             setFloorTomFreq(parseInt(both.frequency));
@@ -661,6 +759,24 @@ function App() {
           {renderMarble(SNARE, 14, 'bg-green-300')}
           {renderMarble(SNARE, 15, 'bg-green-300')}
         </div>
+        <div id={"highTomRace"} className={`bg-orange-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
+          {renderMarble(HIGH_TOM, 0, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 1, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 2, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 3, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 4, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 5, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 6, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 7, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 8, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 9, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 10, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 11, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 12, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 13, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 14, 'bg-orange-300')}
+          {renderMarble(HIGH_TOM, 15, 'bg-orange-300')}
+        </div>
         <div id={"bassRace"} className={`bg-red-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
           {renderMarble(BASS, 0, 'bg-red-300')}
           {renderMarble(BASS, 1, 'bg-red-300')}
@@ -678,6 +794,24 @@ function App() {
           {renderMarble(BASS, 13, 'bg-red-300')}
           {renderMarble(BASS, 14, 'bg-red-300')}
           {renderMarble(BASS, 15, 'bg-red-300')}
+        </div>
+        <div id={"mediumTomRace"} className={`bg-orange-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
+          {renderMarble(MEDIUM_TOM, 0, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 1, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 2, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 3, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 4, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 5, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 6, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 7, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 8, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 9, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 10, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 11, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 12, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 13, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 14, 'bg-orange-300')}
+          {renderMarble(MEDIUM_TOM, 15, 'bg-orange-300')}
         </div>
         <div id={"floorTomRace"} className={`bg-orange-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
           {renderMarble(FLOOR_TOM, 0, 'bg-orange-300')}
@@ -717,7 +851,17 @@ function App() {
           </span>
         </div>
         <div className='h-32 w-32 text-right'>
+          <span className={`${scoredInstruments[HIGH_TOM]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
+            <span className="relative text-white text-xl font-normal font-serif">success!</span>
+          </span>
+        </div>
+        <div className='h-32 w-32 text-right'>
           <span className={`${scoredInstruments[BASS]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
+            <span className="relative text-white text-xl font-normal font-serif">success!</span>
+          </span>
+        </div>
+        <div className='h-32 w-32 text-right'>
+          <span className={`${scoredInstruments[MEDIUM_TOM]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
             <span className="relative text-white text-xl font-normal font-serif">success!</span>
           </span>
         </div>
@@ -757,10 +901,28 @@ function App() {
           }
           <p className="text-sm hidden group-hover:block">Aufnehmen</p>
         </div>
+        <div onClick={() => recordInstrument(HIGH_TOM)} className={`transition-transform transform-gpu scale-${matchedInstruments[HIGH_TOM] ? "110 bg-orange-400" : "100 bg-orange-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
+          <img src='high-tom.png' alt='high-tom' className="object-contain h-20 w-20 mt-1" />
+          {
+            highTomFreq === 0 
+            ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
+            : null
+          }
+          <p className="text-sm hidden group-hover:block">Aufnehmen</p>
+        </div>
         <div onClick={() => recordInstrument(BASS)} className={`transition-transform transform-gpu scale-${matchedInstruments[BASS] ? "110 bg-red-400" : "100 bg-red-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
           <img src='bass-drum.png' alt='bass-drum' className="object-contain h-20 w-20 mt-1" />
           {
             bassFreq === 0 
+            ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
+            : null
+          }
+          <p className="text-sm hidden group-hover:block">Aufnehmen</p>
+        </div>
+        <div onClick={() => recordInstrument(MEDIUM_TOM)} className={`transition-transform transform-gpu scale-${matchedInstruments[MEDIUM_TOM] ? "110 bg-orange-400" : "100 bg-orange-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
+          <img src='medium-tom.png' alt='medium-tom' className="object-contain h-20 w-20 mt-1" />
+          {
+            mediumTomFreq === 0 
             ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
             : null
           }
