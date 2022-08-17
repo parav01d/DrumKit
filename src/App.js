@@ -6,14 +6,26 @@ const HI_HAT = "HI_HAT";
 const HI_HAT_CLOSED = "HI_HAT_CLOSED";
 const SNARE = "SNARE";
 const BASS = "BASS";
+const FLOOR_TOM = "FLOOR_TOM";
 
 const FREQUENCY_TOLERANCE = 3;
 const MELODIES = {
+  TEST: {
+    HI_HAT:        "--x---x---x---x-",
+    HI_HAT_CLOSED: "x---x---x---x---",
+    SNARE:         "----x-------x---",
+    BASS:          "x--x---x------x-",
+    FLOOR_TOM:     "--x---x----x----",
+    SPEED: 202,
+    TACT: () => 4/4,
+    NAME: "Test"
+  },
   PUNK_1: {
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     BASS:          "x---------x-----",
+    FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
     NAME: "Punk 1"
@@ -23,6 +35,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     BASS:          "x-----x---x-----",
+    FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
     NAME: "Punk 2"
@@ -32,6 +45,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     BASS:          "--x---x-x-------",
+    FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
     NAME: "Punk 3"
@@ -41,6 +55,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     BASS:          "x-x---x-x-x-----",
+    FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
     NAME: "Punk 4"
@@ -50,6 +65,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     BASS:          "x-------x-------",
+    FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 1"
@@ -59,6 +75,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     BASS:          "x---x---x---x---",
+    FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 2"
@@ -68,6 +85,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     BASS:          "x-----x-x-------",
+    FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 3"
@@ -77,6 +95,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     BASS:          "x-------x-x-----",
+    FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 4"
@@ -86,6 +105,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
     BASS:          "x-------x-----x-",
+    FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 8ths 1"
@@ -95,6 +115,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
     BASS:          "x-x-----x-x-----",
+    FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 8ths 2"
@@ -104,6 +125,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
     BASS:          "x-x---x-x-------",
+    FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 8ths 3"
@@ -113,6 +135,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
     BASS:          "x-x---x---x-----",
+    FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 8ths 4"
@@ -122,6 +145,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
     BASS:          "x-----x-x-------",
+    FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
     NAME: "Rock Slow 16ths 1"
@@ -131,6 +155,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
     BASS:          "x------xx-------",
+    FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
     NAME: "Rock Slow 16ths 2"
@@ -140,6 +165,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
     BASS:          "x------xx-x-----",
+    FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
     NAME: "Rock Slow 16ths 3"
@@ -149,6 +175,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
     BASS:          "x------xx-----x-",
+    FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
     NAME: "Rock Slow 16ths 4"
@@ -158,6 +185,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
     BASS:          "x-----x-----",
+    FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
     NAME: "Rock Slow 12/8 1"
@@ -167,6 +195,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
     BASS:          "x----xx-----",
+    FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
     NAME: "Rock Slow 12/8 2"
@@ -176,6 +205,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
     BASS:          "x----xx----x",
+    FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
     NAME: "Rock Slow 12/8 3"
@@ -185,6 +215,7 @@ const MELODIES = {
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
     BASS:          "x-x--xx-----",
+    FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
     NAME: "Rock Slow 12/8 4"
@@ -201,11 +232,13 @@ function App() {
   const matchHiHat$ = useRef(new Subject()).current;
   const matchHiHatClosed$ = useRef(new Subject()).current;
   const matchBass$ = useRef(new Subject()).current;
+  const matchFloorTom$ = useRef(new Subject()).current;
 
   const scoreSnare$ = useRef(new Subject()).current;
   const scoreHiHat$ = useRef(new Subject()).current;
   const scoreHiHatClosed$ = useRef(new Subject()).current;
   const scoreBass$ = useRef(new Subject()).current;
+  const scoreFloorTom$ = useRef(new Subject()).current;
   
   const [points, setPoints] = useState(0);
 
@@ -222,6 +255,7 @@ function App() {
   const [hiHatFreq, setHiHatFreq] = useState(0);
   const [hiHatClosedFreq, setHiHatClosedFreq] = useState(0);
   const [bassFreq, setBassFreq] = useState(0);
+  const [floorTomFreq, setFloorTomFreq] = useState(0);
 
   const [animation, setAnimation] = useState({
     0: [],
@@ -245,13 +279,15 @@ function App() {
     [HI_HAT]: false,
     [HI_HAT_CLOSED]: false,
     [SNARE]: false,
-    [BASS]: false
+    [BASS]: false,
+    [FLOOR_TOM]: false
   })
   const [scoredInstruments, setScoredInstruments] = useState({
     [HI_HAT]: false,
     [HI_HAT_CLOSED]: false,
     [SNARE]: false,
-    [BASS]: false
+    [BASS]: false,
+    [FLOOR_TOM]: false
   })
 
 
@@ -281,6 +317,10 @@ function App() {
     if(matchedInstruments[BASS] && MELODIES[melody][BASS][step] === "x") {
       additionalPoints = additionalPoints + 50
       scoreBass$.next(BASS);
+    }
+    if(matchedInstruments[FLOOR_TOM] && MELODIES[melody][FLOOR_TOM][step] === "x") {
+      additionalPoints = additionalPoints + 50
+      scoreBass$.next(FLOOR_TOM);
     }
     setPoints((points) => points + additionalPoints);
   }, [step, melody])
@@ -332,9 +372,12 @@ function App() {
           if(frequency <= bassFreq + FREQUENCY_TOLERANCE && frequency >= bassFreq - FREQUENCY_TOLERANCE) {
             matchBass$.next(BASS);
           }
+          if(frequency <= floorTomFreq + FREQUENCY_TOLERANCE && frequency >= floorTomFreq - FREQUENCY_TOLERANCE) {
+            matchFloorTom$.next(FLOOR_TOM);
+          }
         }
       });
-  }, [bassFreq, snareFreq, hiHatClosedFreq, hiHatFreq])
+  }, [bassFreq, snareFreq, hiHatClosedFreq, hiHatFreq, floorTomFreq])
   
   useEffect(() => {
     scoreHiHatClosed$.subscribe((instrument) => {
@@ -359,6 +402,12 @@ function App() {
       setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
     })
     scoreBass$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
+    })
+    scoreFloorTom$.subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
+    })
+    scoreFloorTom$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
     })
   }, [bpm, melody])
@@ -388,7 +437,13 @@ function App() {
     matchBass$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
     })
-  }, [matchHiHatClosed$, matchHiHat$, matchSnare$, matchBass$])
+    matchFloorTom$.subscribe((instrument) => {
+      setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
+    })
+    matchFloorTom$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
+    })
+  }, [matchHiHatClosed$, matchHiHat$, matchSnare$, matchBass$, matchFloorTom$])
 
   useEffect(() => {
 
@@ -408,8 +463,12 @@ function App() {
           if(MELODIES[melody][BASS][(i+1)%MELODIES[melody][BASS].length] === "x") {
             newAnimation.push(BASS);
           }
-          setAnimation((animation) => ({...animation, ...{[(i+1)%MELODIES[melody][BASS].length]: newAnimation}}));
-          setStep((i+1)%MELODIES[melody][BASS].length);
+          if(MELODIES[melody][FLOOR_TOM][(i+1)%MELODIES[melody][FLOOR_TOM].length] === "x") {
+            newAnimation.push(FLOOR_TOM);
+          }
+
+          setAnimation((animation) => ({...animation, ...{[(i+1)%MELODIES[melody][HI_HAT_CLOSED].length]: newAnimation}}));
+          setStep((i+1)%MELODIES[melody][HI_HAT_CLOSED].length);
         }
     })
     return () => subscription.unsubscribe();
@@ -445,6 +504,9 @@ function App() {
             break;
           case BASS:
             setBassFreq(parseInt(both.frequency));
+            break;
+          case FLOOR_TOM:
+            setFloorTomFreq(parseInt(both.frequency));
             break;
           default:
             break;
@@ -617,6 +679,24 @@ function App() {
           {renderMarble(BASS, 14, 'bg-red-300')}
           {renderMarble(BASS, 15, 'bg-red-300')}
         </div>
+        <div id={"floorTomRace"} className={`bg-orange-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
+          {renderMarble(FLOOR_TOM, 0, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 1, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 2, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 3, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 4, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 5, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 6, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 7, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 8, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 9, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 10, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 11, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 12, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 13, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 14, 'bg-orange-300')}
+          {renderMarble(FLOOR_TOM, 15, 'bg-orange-300')}
+        </div>
       </div>
       <div className={"h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0"}>
         <div className='flex flex-row gap-5'>
@@ -638,6 +718,11 @@ function App() {
         </div>
         <div className='h-32 w-32 text-right'>
           <span className={`${scoredInstruments[BASS]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
+            <span className="relative text-white text-xl font-normal font-serif">success!</span>
+          </span>
+        </div>
+        <div className='h-32 w-32 text-right'>
+          <span className={`${scoredInstruments[FLOOR_TOM]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
             <span className="relative text-white text-xl font-normal font-serif">success!</span>
           </span>
         </div>
@@ -676,6 +761,15 @@ function App() {
           <img src='bass-drum.png' alt='bass-drum' className="object-contain h-20 w-20 mt-1" />
           {
             bassFreq === 0 
+            ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
+            : null
+          }
+          <p className="text-sm hidden group-hover:block">Aufnehmen</p>
+        </div>
+        <div onClick={() => recordInstrument(FLOOR_TOM)} className={`transition-transform transform-gpu scale-${matchedInstruments[FLOOR_TOM] ? "110 bg-orange-400" : "100 bg-orange-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
+          <img src='floor-tom.png' alt='floor-tom' className="object-contain h-20 w-20 mt-1" />
+          {
+            floorTomFreq === 0 
             ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
             : null
           }
