@@ -2,263 +2,307 @@ import React, { useEffect, useRef, useState } from 'react';
 import fft from "fft-js";
 import { debounceTime, delay, interval, reduce,  Subject, takeUntil, timer } from 'rxjs';
 
+const CRASH = "CRASH";
 const HI_HAT = "HI_HAT";
 const HI_HAT_CLOSED = "HI_HAT_CLOSED";
 const SNARE = "SNARE";
 const HIGH_TOM = "HIGH_TOM";
 const BASS = "BASS";
 const MEDIUM_TOM = "MEDIUM_TOM";
+const RIDE = "RIDE";
 const FLOOR_TOM = "FLOOR_TOM";
 
 const FREQUENCY_TOLERANCE = 3;
 const MELODIES = {
   TEST: {
+    CRASH:         "-x--x---x---x---",
     HI_HAT:        "--x---x---x---x-",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "--x----x---x---x",
     BASS:          "x--x---x------x-",
     MEDIUM_TOM:    "---x-----x-x----",
+    RIDE:          "--x---x----x--x-",
     FLOOR_TOM:     "--x---x----x----",
     SPEED: 202,
     TACT: () => 4/4,
     NAME: "Test"
   },
   PUNK_1: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x---------x-----",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
     NAME: "Punk 1"
   },
   PUNK_2: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-----x---x-----",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
     NAME: "Punk 2"
   },
   PUNK_3: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "--x---x-x-------",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
     NAME: "Punk 3"
   },
   PUNK_4: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-x---x-x-x-----",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 202,
     TACT: () => 4/4,
     NAME: "Punk 4"
   },
   ROCK_1: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-------x-------",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 1"
   },
   ROCK_2: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x---x---x---x---",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 2"
   },
   ROCK_3: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-----x-x-------",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 3"
   },
   ROCK_4: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x---x---x---x---",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-------x-x-----",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 4"
   },
   ROCK_8THS_1: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-------x-----x-",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 8ths 1"
   },
   ROCK_8THS_2: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-x-----x-x-----",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 8ths 2"
   },
   ROCK_8THS_3: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-x---x-x-------",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 8ths 3"
   },
   ROCK_8THS_4: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "x-x-x-x-x-x-x-x-",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-x---x---x-----",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 132,
     TACT: () => 4/4,
     NAME: "Rock 8ths 4"
   },
   ROCK_SLOW_16THS_1: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x-----x-x-------",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
     NAME: "Rock Slow 16ths 1"
   },
   ROCK_SLOW_16THS_2: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x------xx-------",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
     NAME: "Rock Slow 16ths 2"
   },
   ROCK_SLOW_16THS_3: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x------xx-x-----",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
     NAME: "Rock Slow 16ths 3"
   },
   ROCK_SLOW_16THS_4: {
+    CRASH:         "----------------",
     HI_HAT:        "----------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxxxxxx",
     SNARE:         "----x-------x---",
     HIGH_TOM:      "----------------",
     BASS:          "x------xx-----x-",
     MEDIUM_TOM:    "----------------",
+    RIDE:          "----------------",
     FLOOR_TOM:     "----------------",
     SPEED: 80,
     TACT: () => 4/4,
     NAME: "Rock Slow 16ths 4"
   },
   ROCK_SLOW_12_8_1: {
+    CRASH:         "------------",
     HI_HAT:        "------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
     HIGH_TOM:      "------------",
     BASS:          "x-----x-----",
     MEDIUM_TOM:    "------------",
+    RIDE:          "------------",
     FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
     NAME: "Rock Slow 12/8 1"
   },
   ROCK_SLOW_12_8_2: {
+    CRASH:         "------------",
     HI_HAT:        "------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
     HIGH_TOM:      "------------",
     BASS:          "x----xx-----",
     MEDIUM_TOM:    "------------",
+    RIDE:          "------------",
     FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
     NAME: "Rock Slow 12/8 2"
   },
   ROCK_SLOW_12_8_3: {
+    CRASH:         "------------",
     HI_HAT:        "------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
     HIGH_TOM:      "------------",
     BASS:          "x----xx----x",
     MEDIUM_TOM:    "------------",
+    RIDE:          "------------",
     FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
     NAME: "Rock Slow 12/8 3"
   },
   ROCK_SLOW_12_8_4: {
+    CRASH:         "------------",
     HI_HAT:        "------------",
     HI_HAT_CLOSED: "xxxxxxxxxxxx",
     SNARE:         "---x-----x--",
     HIGH_TOM:      "------------",
     BASS:          "x-x--xx-----",
     MEDIUM_TOM:    "------------",
+    RIDE:          "------------",
     FLOOR_TOM:     "------------",
     SPEED: 60,
     TACT: () => 12/8,
@@ -272,20 +316,24 @@ function App() {
   const raceRef = useRef(null)
   const audioInput$ = useRef(new Subject()).current;
 
+  const matchCrash$ = useRef(new Subject()).current;
   const matchSnare$ = useRef(new Subject()).current;
   const matchHiHat$ = useRef(new Subject()).current;
   const matchHiHatClosed$ = useRef(new Subject()).current;
   const matchHighTom$ = useRef(new Subject()).current;
   const matchBass$ = useRef(new Subject()).current;
   const matchMediumTom$ = useRef(new Subject()).current;
+  const matchRide$ = useRef(new Subject()).current;
   const matchFloorTom$ = useRef(new Subject()).current;
 
+  const scoreCrash$ = useRef(new Subject()).current;
   const scoreSnare$ = useRef(new Subject()).current;
   const scoreHiHat$ = useRef(new Subject()).current;
   const scoreHiHatClosed$ = useRef(new Subject()).current;
   const scoreHighTom$ = useRef(new Subject()).current;
   const scoreBass$ = useRef(new Subject()).current;
   const scoreMediumTom$ = useRef(new Subject()).current;
+  const scoreRide$ = useRef(new Subject()).current;
   const scoreFloorTom$ = useRef(new Subject()).current;
   
   const [points, setPoints] = useState(0);
@@ -299,12 +347,14 @@ function App() {
   const [bpm, setBpm] = useState(202);
   const [withMetronome, setWithMetronome] = useState(false);
 
+  const [crashFreq, setCrashFreq] = useState(0);
   const [snareFreq, setSnareFreq] = useState(0);
   const [hiHatFreq, setHiHatFreq] = useState(0);
   const [hiHatClosedFreq, setHiHatClosedFreq] = useState(0);
   const [highTomFreq, setHighTomFreq] = useState(0);
   const [bassFreq, setBassFreq] = useState(0);
   const [mediumTomFreq, setMediumTomFreq] = useState(0);
+  const [rideFreq, setRideFreq] = useState(0);
   const [floorTomFreq, setFloorTomFreq] = useState(0);
 
   const [animation, setAnimation] = useState({
@@ -326,21 +376,25 @@ function App() {
     15: []
   });
   const [matchedInstruments, setMatchedInstruments] = useState({
+    [CRASH]: false,
     [HI_HAT]: false,
     [HI_HAT_CLOSED]: false,
     [SNARE]: false,
     [HIGH_TOM]: false,
     [BASS]: false,
     [MEDIUM_TOM]: false,
+    [RIDE]: false,
     [FLOOR_TOM]: false
   })
   const [scoredInstruments, setScoredInstruments] = useState({
+    [CRASH]: false,
     [HI_HAT]: false,
     [HI_HAT_CLOSED]: false,
     [SNARE]: false,
     [HIGH_TOM]: false,
     [BASS]: false,
     [MEDIUM_TOM]: false,
+    [RIDE]: false,
     [FLOOR_TOM]: false
   })
 
@@ -356,6 +410,10 @@ function App() {
   useEffect(() => {
     var additionalPoints = 0
 
+    if(matchedInstruments[CRASH] && MELODIES[melody][CRASH][step] === "x") {
+      additionalPoints = additionalPoints + 50
+      scoreHiHat$.next(CRASH)
+    }
     if(matchedInstruments[HI_HAT] && MELODIES[melody][HI_HAT][step] === "x") {
       additionalPoints = additionalPoints + 50
       scoreHiHat$.next(HI_HAT)
@@ -379,6 +437,10 @@ function App() {
     if(matchedInstruments[MEDIUM_TOM] && MELODIES[melody][MEDIUM_TOM][step] === "x") {
       additionalPoints = additionalPoints + 50
       scoreBass$.next(MEDIUM_TOM);
+    }
+    if(matchedInstruments[RIDE] && MELODIES[melody][RIDE][step] === "x") {
+      additionalPoints = additionalPoints + 50
+      scoreHiHat$.next(RIDE)
     }
     if(matchedInstruments[FLOOR_TOM] && MELODIES[melody][FLOOR_TOM][step] === "x") {
       additionalPoints = additionalPoints + 50
@@ -422,6 +484,9 @@ function App() {
           return c;
         }, {frequency: 0, magnitude: 0})
         if( frequency > FREQUENCY_TOLERANCE && magnitude > 10){
+          if(frequency <= crashFreq + FREQUENCY_TOLERANCE && frequency >= crashFreq - FREQUENCY_TOLERANCE) {
+            matchHiHat$.next(CRASH);
+          }
           if(frequency <= hiHatFreq + FREQUENCY_TOLERANCE && frequency >= hiHatFreq - FREQUENCY_TOLERANCE) {
             matchHiHat$.next(HI_HAT);
           }
@@ -440,14 +505,23 @@ function App() {
           if(frequency <= mediumTomFreq + FREQUENCY_TOLERANCE && frequency >= mediumTomFreq - FREQUENCY_TOLERANCE) {
             matchBass$.next(MEDIUM_TOM);
           }
+          if(frequency <= rideFreq + FREQUENCY_TOLERANCE && frequency >= rideFreq - FREQUENCY_TOLERANCE) {
+            matchHiHat$.next(RIDE);
+          }
           if(frequency <= floorTomFreq + FREQUENCY_TOLERANCE && frequency >= floorTomFreq - FREQUENCY_TOLERANCE) {
             matchFloorTom$.next(FLOOR_TOM);
           }
         }
       });
-  }, [bassFreq, snareFreq, hiHatClosedFreq, hiHatFreq, floorTomFreq, highTomFreq, mediumTomFreq])
+  }, [bassFreq, snareFreq, hiHatClosedFreq, hiHatFreq, floorTomFreq, highTomFreq, mediumTomFreq, crashFreq, rideFreq])
   
   useEffect(() => {
+    scoreCrash$.subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
+    })
+    scoreCrash$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: false} }))
+    })
     scoreHiHatClosed$.subscribe((instrument) => {
       setScoredInstruments((scoredInst) => ({...scoredInst, ...{[instrument]: true} }))
     })
@@ -493,6 +567,12 @@ function App() {
   }, [bpm, melody])
 
   useEffect(() => {
+    matchCrash$.subscribe((instrument) => {
+      setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
+    })
+    matchCrash$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
+    })
     matchHiHatClosed$.subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
     })
@@ -523,6 +603,12 @@ function App() {
     matchBass$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
     })
+    matchRide$.subscribe((instrument) => {
+      setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
+    })
+    matchRide$.pipe(delay(60000/bpm/4*MELODIES[melody].TACT()), debounceTime(60000/bpm/4*MELODIES[melody].TACT())).subscribe((instrument) => {
+      setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: false} }))
+    })
     matchFloorTom$.subscribe((instrument) => {
       setMatchedInstruments((matchedInst) => ({...matchedInst, ...{[instrument]: true} }))
     })
@@ -537,6 +623,9 @@ function App() {
       ).subscribe((i) => {
         if(isRunning) {
           const newAnimation = []
+          if(MELODIES[melody][CRASH][(i+1)%MELODIES[melody][CRASH].length] === "x") {
+            newAnimation.push(CRASH);
+          }
           if(MELODIES[melody][SNARE][(i+1)%MELODIES[melody][SNARE].length] === "x") {
             newAnimation.push(SNARE);
           }
@@ -554,6 +643,9 @@ function App() {
           }
           if(MELODIES[melody][MEDIUM_TOM][(i+1)%MELODIES[melody][MEDIUM_TOM].length] === "x") {
             newAnimation.push(MEDIUM_TOM);
+          }
+          if(MELODIES[melody][RIDE][(i+1)%MELODIES[melody][RIDE].length] === "x") {
+            newAnimation.push(RIDE);
           }
           if(MELODIES[melody][FLOOR_TOM][(i+1)%MELODIES[melody][FLOOR_TOM].length] === "x") {
             newAnimation.push(FLOOR_TOM);
@@ -585,6 +677,9 @@ function App() {
       }, {frequency: 0, magnitude: 0})
       ).subscribe((both) => {
         switch (instrument) {
+          case CRASH:
+            setCrashFreq(parseInt(both.frequency));
+            break;
           case HI_HAT:
             setHiHatFreq(parseInt(both.frequency));
             break;
@@ -602,6 +697,9 @@ function App() {
             break;
           case MEDIUM_TOM:
             setMediumTomFreq(parseInt(both.frequency));
+            break;
+          case RIDE:
+            setRideFreq(parseInt(both.frequency));
             break;
           case FLOOR_TOM:
             setFloorTomFreq(parseInt(both.frequency));
@@ -704,6 +802,24 @@ function App() {
         <div className={`h-14 absolute bottom-12 w-full border-b-slate-300 border-b-2 border-t-slate-300 border-t-2 flex flex-row items-center justify-between bg-white`}>
         </div>
         <div className='flex flex-row h-full gap-5'>
+          <div id={"crashRace"} className={`bg-yellow-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
+            {renderMarble(CRASH, 0, 'bg-yellow-300')}
+            {renderMarble(CRASH, 1, 'bg-yellow-300')}
+            {renderMarble(CRASH, 2, 'bg-yellow-300')}
+            {renderMarble(CRASH, 3, 'bg-yellow-300')}
+            {renderMarble(CRASH, 4, 'bg-yellow-300')}
+            {renderMarble(CRASH, 5, 'bg-yellow-300')}
+            {renderMarble(CRASH, 6, 'bg-yellow-300')}
+            {renderMarble(CRASH, 7, 'bg-yellow-300')}
+            {renderMarble(CRASH, 8, 'bg-yellow-300')}
+            {renderMarble(CRASH, 9, 'bg-yellow-300')}
+            {renderMarble(CRASH, 10, 'bg-yellow-300')}
+            {renderMarble(CRASH, 11, 'bg-yellow-300')}
+            {renderMarble(CRASH, 12, 'bg-yellow-300')}
+            {renderMarble(CRASH, 13, 'bg-yellow-300')}
+            {renderMarble(CRASH, 14, 'bg-yellow-300')}
+            {renderMarble(CRASH, 15, 'bg-yellow-300')}
+          </div>
           <div id={"hiHatRace"} className={`bg-yellow-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
             {renderMarble(HI_HAT, 0, 'bg-yellow-300')}
             {renderMarble(HI_HAT, 1, 'bg-yellow-300')}
@@ -813,6 +929,24 @@ function App() {
           {renderMarble(MEDIUM_TOM, 14, 'bg-orange-300')}
           {renderMarble(MEDIUM_TOM, 15, 'bg-orange-300')}
         </div>
+        <div id={"rideRace"} className={`bg-yellow-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
+            {renderMarble(RIDE, 0, 'bg-yellow-300')}
+            {renderMarble(RIDE, 1, 'bg-yellow-300')}
+            {renderMarble(RIDE, 2, 'bg-yellow-300')}
+            {renderMarble(RIDE, 3, 'bg-yellow-300')}
+            {renderMarble(RIDE, 4, 'bg-yellow-300')}
+            {renderMarble(RIDE, 5, 'bg-yellow-300')}
+            {renderMarble(RIDE, 6, 'bg-yellow-300')}
+            {renderMarble(RIDE, 7, 'bg-yellow-300')}
+            {renderMarble(RIDE, 8, 'bg-yellow-300')}
+            {renderMarble(RIDE, 9, 'bg-yellow-300')}
+            {renderMarble(RIDE, 10, 'bg-yellow-300')}
+            {renderMarble(RIDE, 11, 'bg-yellow-300')}
+            {renderMarble(RIDE, 12, 'bg-yellow-300')}
+            {renderMarble(RIDE, 13, 'bg-yellow-300')}
+            {renderMarble(RIDE, 14, 'bg-yellow-300')}
+            {renderMarble(RIDE, 15, 'bg-yellow-300')}
+          </div>
         <div id={"floorTomRace"} className={`bg-orange-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
           {renderMarble(FLOOR_TOM, 0, 'bg-orange-300')}
           {renderMarble(FLOOR_TOM, 1, 'bg-orange-300')}
@@ -834,6 +968,11 @@ function App() {
       </div>
       <div className={"h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0"}>
         <div className='flex flex-row gap-5'>
+          <div className='h-32 w-32 text-right'>
+            <span className={`${scoredInstruments[CRASH]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
+              <span className="relative text-white text-xl font-normal font-serif">success!</span>
+            </span>
+          </div>
           <div className='h-32 w-32 text-right'>
             <span className={`${scoredInstruments[HI_HAT]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
               <span className="relative text-white text-xl font-normal font-serif">success!</span>
@@ -866,6 +1005,11 @@ function App() {
           </span>
         </div>
         <div className='h-32 w-32 text-right'>
+          <span className={`${scoredInstruments[RIDE]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
+            <span className="relative text-white text-xl font-normal font-serif">success!</span>
+          </span>
+        </div>
+        <div className='h-32 w-32 text-right'>
           <span className={`${scoredInstruments[FLOOR_TOM]? "opacity-100": "opacity-0"} transition-opacity ease-out z-50 rotate-12 before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-green-500 relative inline-block`}>
             <span className="relative text-white text-xl font-normal font-serif">success!</span>
           </span>
@@ -873,6 +1017,15 @@ function App() {
       </div>
       <div id={"action"} className={"h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0"}>
         <div className='flex flex-row gap-5'>
+          <div onClick={() => recordInstrument(CRASH)} className={`transition-transform transform-gpu scale-${matchedInstruments[CRASH] ? "110 bg-yellow-400" : "100 bg-yellow-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
+            <img src='crash.png' alt='crash' className="object-contain h-20 w-20 mt-1" />
+              {
+                crashFreq === 0 
+                ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
+                : null
+              }
+            <p className="text-sm hidden group-hover:block">Aufnehmen</p>
+          </div>
           <div onClick={() => recordInstrument(HI_HAT)} className={`transition-transform transform-gpu scale-${matchedInstruments[HI_HAT] ? "110 bg-yellow-400" : "100 bg-yellow-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
             <img src='hi-hat.png' alt='hi-hat' className="object-contain h-20 w-20 mt-1" />
               {
@@ -928,6 +1081,15 @@ function App() {
           }
           <p className="text-sm hidden group-hover:block">Aufnehmen</p>
         </div>
+        <div onClick={() => recordInstrument(RIDE)} className={`transition-transform transform-gpu scale-${matchedInstruments[RIDE] ? "110 bg-yellow-400" : "100 bg-yellow-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
+            <img src='ride.png' alt='ride' className="object-contain h-20 w-20 mt-1" />
+              {
+                rideFreq === 0 
+                ? (<p className="text-sm group-hover:hidden">Aufnehmen</p>)
+                : null
+              }
+            <p className="text-sm hidden group-hover:block">Aufnehmen</p>
+          </div>
         <div onClick={() => recordInstrument(FLOOR_TOM)} className={`transition-transform transform-gpu scale-${matchedInstruments[FLOOR_TOM] ? "110 bg-orange-400" : "100 bg-orange-300"} shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}>
           <img src='floor-tom.png' alt='floor-tom' className="object-contain h-20 w-20 mt-1" />
           {
