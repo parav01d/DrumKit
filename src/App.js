@@ -1,6 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 import fft from 'fft-js'
 import { debounceTime, delay, interval, reduce, Subject, takeUntil, timer } from 'rxjs'
+import {
+  bassDrumAudio,
+  beepAudio,
+  crashAudio,
+  floorTomAudio,
+  highTomAudio,
+  hiHatAudio,
+  hiHatOpenAudio,
+  mediumTomAudio,
+  rideAudio,
+  snareAudio,
+} from './Audio'
+import { MELODIES } from './Melodies'
 
 const CRASH = 'CRASH'
 const HI_HAT = 'HI_HAT'
@@ -28,456 +41,6 @@ const AVAILABLE_INSTRUMENTS = [
 
 const FREQUENCY_TOLERANCE = 3
 const MAGNITUDE_MINIMUM = 10
-const MELODIES = {
-  TEST: {
-    CRASH: '-x--x---x---x---',
-    HI_HAT: '--x---x---x---x-',
-    HI_HAT_CLOSED: 'x---x---x---x---',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '--x----x---x---x',
-    BASS: 'x--x---x------x-',
-    MEDIUM_TOM: '---x-----x-x----',
-    RIDE: '--x---x----x--x-',
-    FLOOR_TOM: '--x---x----x----',
-    SPEED: 202,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Test',
-  },
-  PUNK_1: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x---x---x---x---',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x---------x-----',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 202,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Punk 1',
-  },
-  PUNK_2: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x---x---x---x---',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-----x---x-----',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 202,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Punk 2',
-  },
-  PUNK_3: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x---x---x---x---',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: '--x---x-x-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 202,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Punk 3',
-  },
-  PUNK_4: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x---x---x---x---',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-x---x-x-x-----',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 202,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Punk 4',
-  },
-  ROCK_1: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x---x---x---x---',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-------x-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 132,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock 1',
-  },
-  ROCK_2: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x---x---x---x---',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x---x---x---x---',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 132,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock 2',
-  },
-  ROCK_3: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x---x---x---x---',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-----x-x-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 132,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock 3',
-  },
-  ROCK_4: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x---x---x---x---',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-------x-x-----',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 132,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock 4',
-  },
-  ROCK_8THS_1: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x-x-x-x-x-x-x-x-',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-------x-----x-',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 132,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock 8ths 1',
-  },
-  ROCK_8THS_2: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x-x-x-x-x-x-x-x-',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-x-----x-x-----',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 132,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock 8ths 2',
-  },
-  ROCK_8THS_3: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x-x-x-x-x-x-x-x-',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-x---x-x-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 132,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock 8ths 3',
-  },
-  ROCK_8THS_4: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x-x-x-x-x-x-x-x-',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-x---x---x-----',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 132,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock 8ths 4',
-  },
-  ROCK_SLOW_16THS_1: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'xxxxxxxxxxxxxxxx',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-----x-x-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 80,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock Slow 16ths 1',
-  },
-  ROCK_SLOW_16THS_2: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'xxxxxxxxxxxxxxxx',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x------xx-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 80,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock Slow 16ths 2',
-  },
-  ROCK_SLOW_16THS_3: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'xxxxxxxxxxxxxxxx',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x------xx-x-----',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 80,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock Slow 16ths 3',
-  },
-  ROCK_SLOW_16THS_4: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'xxxxxxxxxxxxxxxx',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x------xx-----x-',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 80,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Rock Slow 16ths 4',
-  },
-  ROCK_SLOW_12_8_1: {
-    CRASH: '------------',
-    HI_HAT: '------------',
-    HI_HAT_CLOSED: 'xxxxxxxxxxxx',
-    HI_HAT_PEDAL: '------------',
-    SNARE: '---x-----x--',
-    HIGH_TOM: '------------',
-    BASS: 'x-----x-----',
-    MEDIUM_TOM: '------------',
-    RIDE: '------------',
-    FLOOR_TOM: '------------',
-    SPEED: 60,
-    TACT: () => 12 / 8,
-    STEPS: 12,
-    NAME: 'Rock Slow 12/8 1',
-  },
-  ROCK_SLOW_12_8_2: {
-    CRASH: '------------',
-    HI_HAT: '------------',
-    HI_HAT_CLOSED: 'xxxxxxxxxxxx',
-    HI_HAT_PEDAL: '------------',
-    SNARE: '---x-----x--',
-    HIGH_TOM: '------------',
-    BASS: 'x----xx-----',
-    MEDIUM_TOM: '------------',
-    RIDE: '------------',
-    FLOOR_TOM: '------------',
-    SPEED: 60,
-    TACT: () => 12 / 8,
-    STEPS: 12,
-    NAME: 'Rock Slow 12/8 2',
-  },
-  ROCK_SLOW_12_8_3: {
-    CRASH: '------------',
-    HI_HAT: '------------',
-    HI_HAT_CLOSED: 'xxxxxxxxxxxx',
-    HI_HAT_PEDAL: '------------',
-    SNARE: '---x-----x--',
-    HIGH_TOM: '------------',
-    BASS: 'x----xx----x',
-    MEDIUM_TOM: '------------',
-    RIDE: '------------',
-    FLOOR_TOM: '------------',
-    SPEED: 60,
-    TACT: () => 12 / 8,
-    STEPS: 12,
-    NAME: 'Rock Slow 12/8 3',
-  },
-  ROCK_SLOW_12_8_4: {
-    CRASH: '------------',
-    HI_HAT: '------------',
-    HI_HAT_CLOSED: 'xxxxxxxxxxxx',
-    HI_HAT_PEDAL: '------------',
-    SNARE: '---x-----x--',
-    HIGH_TOM: '------------',
-    BASS: 'x-x--xx-----',
-    MEDIUM_TOM: '------------',
-    RIDE: '------------',
-    FLOOR_TOM: '------------',
-    SPEED: 60,
-    TACT: () => 12 / 8,
-    STEPS: 12,
-    NAME: 'Rock Slow 12/8 4',
-  },
-  ALT_ROCK_1: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: 'x-x-x-x-x-x-x-x-',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x------x--x-',
-    HIGH_TOM: '----------------',
-    BASS: 'x-x-----x---x---',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 112,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Alt Rock 1',
-  },
-  BEACH_MUSIC_A_1: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: '----------------',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-x-----x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-------x-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: 'x-x-x-x-x-x-x-x-',
-    SPEED: 130,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Beach Music A 1',
-  },
-  BEACH_MUSIC_A_2: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: '----------------',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-x-----x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-------x-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: 'x-x-x-x-x-x-x-x-',
-    FLOOR_TOM: '----------------',
-    SPEED: 130,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Beach Music A 2',
-  },
-  BEACH_MUSIC_A_3: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: '----------------',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-----x-x-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: 'x-x-x-x-x-x-x-x-',
-    FLOOR_TOM: '----------------',
-    SPEED: 130,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Beach Music A 3',
-  },
-  BEACH_MUSIC_A_4: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: '----------------',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x-----x-x-------',
-    MEDIUM_TOM: '----------------',
-    RIDE: 'x-x-x-x-x-x-x-x-',
-    FLOOR_TOM: '----------------',
-    SPEED: 130,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Beach Music A 4',
-  },
-  BOOGIE_WOOGIE_1: {
-    CRASH: '----------------',
-    HI_HAT: '----x-------x---',
-    HI_HAT_CLOSED: 'x-x---x-x-x---x-',
-    HI_HAT_PEDAL: '----------------',
-    SNARE: '------x-------x-',
-    HIGH_TOM: '----------------',
-    BASS: 'x-x-x---x-x-x---',
-    MEDIUM_TOM: '----------------',
-    RIDE: '----------------',
-    FLOOR_TOM: '----------------',
-    SPEED: 146,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Boogie Woogie 1',
-  },
-  BOOGIE_WOOGIE_2: {
-    CRASH: '----------------',
-    HI_HAT: '----------------',
-    HI_HAT_CLOSED: '----------------',
-    HI_HAT_PEDAL: 'x---x---x---x---',
-    SNARE: '----x-------x---',
-    HIGH_TOM: '----------------',
-    BASS: 'x--x---xx--x---x',
-    MEDIUM_TOM: '----------------',
-    RIDE: 'x--xx--xx--xx--x',
-    FLOOR_TOM: '----------------',
-    SPEED: 146,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Boogie Woogie 2',
-  },
-}
 
 function App() {
   const raceRef = useRef(null)
@@ -512,7 +75,7 @@ function App() {
   const [raceHeight, setRaceHeight] = useState(0)
 
   const [isRecording, setIsRecording] = useState(false)
-  const [isRunning, setIsRunning] = useState(true)
+  const [isRunning, setIsRunning] = useState(false)
   const [bpm, setBpm] = useState(202)
   const [withMetronome, setWithMetronome] = useState(false)
 
@@ -569,8 +132,43 @@ function App() {
   const [step, setStep] = useState(0)
 
   useEffect(() => {
+    if (isRunning) {
+      if (MELODIES[melody][CRASH][step] === 'x') {
+        playCrash()
+      }
+      if (MELODIES[melody][MEDIUM_TOM][step] === 'x') {
+        playMediumTom()
+      }
+      if (MELODIES[melody][HI_HAT_PEDAL][step] === 'x') {
+        playHiHatOpen()
+      }
+      if (MELODIES[melody][HI_HAT][step] === 'x') {
+        playHiHatOpen()
+      }
+      if (MELODIES[melody][RIDE][step] === 'x') {
+        playRide()
+      }
+      if (MELODIES[melody][SNARE][step] === 'x') {
+        playSnare()
+      }
+      if (MELODIES[melody][HI_HAT_CLOSED][step] === 'x') {
+        playHiHatClosed()
+      }
+      if (MELODIES[melody][BASS][step] === 'x') {
+        playBassDrum()
+      }
+      if (MELODIES[melody][HIGH_TOM][step] === 'x') {
+        playHighTom()
+      }
+      if (MELODIES[melody][FLOOR_TOM][step] === 'x') {
+        playFloorTom()
+      }
+    }
+  }, [step, isRunning])
+
+  useEffect(() => {
     if (withMetronome && step % 4 === 0) {
-      beep()
+      playBeep()
     }
   }, [step, withMetronome])
 
@@ -741,20 +339,18 @@ function App() {
     const subscription = interval((60000 / bpm / 4) * MELODIES[melody].TACT())
       .pipe()
       .subscribe((i) => {
-        if (isRunning) {
-          const nextStep = (i + 1) % MELODIES[melody].STEPS
-          const newAnimation = AVAILABLE_INSTRUMENTS.reduce((acc, instrument) => {
-            if (MELODIES[melody][instrument.name][nextStep] === 'x') {
-              return [...acc, instrument.name]
-            }
-            return acc
-          }, [])
-          setAnimation((animation) => ({ ...animation, ...{ [nextStep]: newAnimation } }))
-          setStep(nextStep)
-        }
+        const nextStep = (i + 1) % MELODIES[melody].STEPS
+        const newAnimation = AVAILABLE_INSTRUMENTS.reduce((acc, instrument) => {
+          if (MELODIES[melody][instrument.name][nextStep] === 'x') {
+            return [...acc, instrument.name]
+          }
+          return acc
+        }, [])
+        setAnimation((animation) => ({ ...animation, ...{ [nextStep]: newAnimation } }))
+        setStep(nextStep)
       })
     return () => subscription.unsubscribe()
-  }, [bpm, isRunning, melody])
+  }, [bpm, melody])
 
   const recordInstrument = (instrument) => {
     setIsRecording(true)
@@ -778,11 +374,64 @@ function App() {
       })
   }
 
-  const beep = () => {
-    const snd = new Audio(
-      'data:audio/wav;base64,//uQRAAAAWMSLwUIYAAsYkXgoQwAEaYLWfkWgAI0wWs/ItAAAGDgYtAgAyN+QWaAAihwMWm4G8QQRDiMcCBcH3Cc+CDv/7xA4Tvh9Rz/y8QADBwMWgQAZG/ILNAARQ4GLTcDeIIIhxGOBAuD7hOfBB3/94gcJ3w+o5/5eIAIAAAVwWgQAVQ2ORaIQwEMAJiDg95G4nQL7mQVWI6GwRcfsZAcsKkJvxgxEjzFUgfHoSQ9Qq7KNwqHwuB13MA4a1q/DmBrHgPcmjiGoh//EwC5nGPEmS4RcfkVKOhJf+WOgoxJclFz3kgn//dBA+ya1GhurNn8zb//9NNutNuhz31f////9vt///z+IdAEAAAK4LQIAKobHItEIYCGAExBwe8jcToF9zIKrEdDYIuP2MgOWFSE34wYiR5iqQPj0JIeoVdlG4VD4XA67mAcNa1fhzA1jwHuTRxDUQ//iYBczjHiTJcIuPyKlHQkv/LHQUYkuSi57yQT//uggfZNajQ3Vmz+Zt//+mm3Wm3Q576v////+32///5/EOgAAADVghQAAAAA//uQZAUAB1WI0PZugAAAAAoQwAAAEk3nRd2qAAAAACiDgAAAAAAABCqEEQRLCgwpBGMlJkIz8jKhGvj4k6jzRnqasNKIeoh5gI7BJaC1A1AoNBjJgbyApVS4IDlZgDU5WUAxEKDNmmALHzZp0Fkz1FMTmGFl1FMEyodIavcCAUHDWrKAIA4aa2oCgILEBupZgHvAhEBcZ6joQBxS76AgccrFlczBvKLC0QI2cBoCFvfTDAo7eoOQInqDPBtvrDEZBNYN5xwNwxQRfw8ZQ5wQVLvO8OYU+mHvFLlDh05Mdg7BT6YrRPpCBznMB2r//xKJjyyOh+cImr2/4doscwD6neZjuZR4AgAABYAAAABy1xcdQtxYBYYZdifkUDgzzXaXn98Z0oi9ILU5mBjFANmRwlVJ3/6jYDAmxaiDG3/6xjQQCCKkRb/6kg/wW+kSJ5//rLobkLSiKmqP/0ikJuDaSaSf/6JiLYLEYnW/+kXg1WRVJL/9EmQ1YZIsv/6Qzwy5qk7/+tEU0nkls3/zIUMPKNX/6yZLf+kFgAfgGyLFAUwY//uQZAUABcd5UiNPVXAAAApAAAAAE0VZQKw9ISAAACgAAAAAVQIygIElVrFkBS+Jhi+EAuu+lKAkYUEIsmEAEoMeDmCETMvfSHTGkF5RWH7kz/ESHWPAq/kcCRhqBtMdokPdM7vil7RG98A2sc7zO6ZvTdM7pmOUAZTnJW+NXxqmd41dqJ6mLTXxrPpnV8avaIf5SvL7pndPvPpndJR9Kuu8fePvuiuhorgWjp7Mf/PRjxcFCPDkW31srioCExivv9lcwKEaHsf/7ow2Fl1T/9RkXgEhYElAoCLFtMArxwivDJJ+bR1HTKJdlEoTELCIqgEwVGSQ+hIm0NbK8WXcTEI0UPoa2NbG4y2K00JEWbZavJXkYaqo9CRHS55FcZTjKEk3NKoCYUnSQ0rWxrZbFKbKIhOKPZe1cJKzZSaQrIyULHDZmV5K4xySsDRKWOruanGtjLJXFEmwaIbDLX0hIPBUQPVFVkQkDoUNfSoDgQGKPekoxeGzA4DUvnn4bxzcZrtJyipKfPNy5w+9lnXwgqsiyHNeSVpemw4bWb9psYeq//uQZBoABQt4yMVxYAIAAAkQoAAAHvYpL5m6AAgAACXDAAAAD59jblTirQe9upFsmZbpMudy7Lz1X1DYsxOOSWpfPqNX2WqktK0DMvuGwlbNj44TleLPQ+Gsfb+GOWOKJoIrWb3cIMeeON6lz2umTqMXV8Mj30yWPpjoSa9ujK8SyeJP5y5mOW1D6hvLepeveEAEDo0mgCRClOEgANv3B9a6fikgUSu/DmAMATrGx7nng5p5iimPNZsfQLYB2sDLIkzRKZOHGAaUyDcpFBSLG9MCQALgAIgQs2YunOszLSAyQYPVC2YdGGeHD2dTdJk1pAHGAWDjnkcLKFymS3RQZTInzySoBwMG0QueC3gMsCEYxUqlrcxK6k1LQQcsmyYeQPdC2YfuGPASCBkcVMQQqpVJshui1tkXQJQV0OXGAZMXSOEEBRirXbVRQW7ugq7IM7rPWSZyDlM3IuNEkxzCOJ0ny2ThNkyRai1b6ev//3dzNGzNb//4uAvHT5sURcZCFcuKLhOFs8mLAAEAt4UWAAIABAAAAAB4qbHo0tIjVkUU//uQZAwABfSFz3ZqQAAAAAngwAAAE1HjMp2qAAAAACZDgAAAD5UkTE1UgZEUExqYynN1qZvqIOREEFmBcJQkwdxiFtw0qEOkGYfRDifBui9MQg4QAHAqWtAWHoCxu1Yf4VfWLPIM2mHDFsbQEVGwyqQoQcwnfHeIkNt9YnkiaS1oizycqJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU='
-    )
-    snd.play()
+  const playBeep = () => {
+    const audio = new Audio(beepAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
+  }
+
+  const playHiHatClosed = () => {
+    const audio = new Audio(hiHatAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
+  }
+
+  const playHiHatOpen = () => {
+    const audio = new Audio(hiHatOpenAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
+  }
+
+  const playHighTom = () => {
+    const audio = new Audio(highTomAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
+  }
+
+  const playBassDrum = () => {
+    const audio = new Audio(bassDrumAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
+  }
+
+  const playMediumTom = () => {
+    const audio = new Audio(mediumTomAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
+  }
+
+  const playFloorTom = async () => {
+    const audio = new Audio(floorTomAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
+  }
+
+  const playRide = async () => {
+    const audio = new Audio(rideAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
+  }
+
+  const playCrash = async () => {
+    const audio = new Audio(crashAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
+  }
+
+  const playSnare = async () => {
+    const audio = new Audio(snareAudio)
+    audio.play()
+    audio.onended = () => audio.remove()
   }
 
   const marbleStyle = (isHidden) => ({
@@ -851,6 +500,7 @@ function App() {
             className={
               'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             }
+            size={2}
             defaultValue={'PUNK_1'}
             onChange={(e) => {
               setMelody(e.target.value)
@@ -858,7 +508,9 @@ function App() {
             }}
           >
             {Object.keys(MELODIES).map((key) => (
-              <option value={key}>{MELODIES[key].NAME}</option>
+              <option key={key} value={key}>
+                {MELODIES[key].NAME}
+              </option>
             ))}
           </select>
           <button onClick={() => setIsRunning(!isRunning)} className="text-gray-500 rounded-full mr-6">
@@ -903,14 +555,14 @@ function App() {
           className={`h-14 absolute bottom-12 w-full border-b-slate-300 border-b-2 border-t-slate-300 border-t-2 flex flex-row items-center justify-between bg-white`}
         />
         {AVAILABLE_INSTRUMENTS.filter((instrument) => MELODIES[melody][instrument.name].indexOf('x') >= 0).map((instrument) => (
-          <div className={`bg-${instrument.color}-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
+          <div key={instrument.name} className={`bg-${instrument.color}-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
             {[...Array(MELODIES[melody].STEPS).keys()].map((i) => renderMarble(instrument.name, i, `bg-${instrument.color}-300`))}
           </div>
         ))}
       </div>
       <div className={'h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0'}>
         {AVAILABLE_INSTRUMENTS.filter((instrument) => MELODIES[melody][instrument.name].indexOf('x') >= 0).map((instrument) => (
-          <div className="h-32 w-32 text-right">
+          <div key={instrument.name} className="h-32 w-32 text-right">
             <span
               className={`${
                 scoredInstruments[instrument.name] ? 'opacity-100' : 'opacity-0'
@@ -924,6 +576,7 @@ function App() {
       <div id={'action'} className={'h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0'}>
         {AVAILABLE_INSTRUMENTS.filter((instrument) => MELODIES[melody][instrument.name].indexOf('x') >= 0).map((instrument) => (
           <div
+            key={instrument.name}
             onClick={() => recordInstrument(instrument.name)}
             className={`transition-transform transform-gpu scale-${
               matchedInstruments[instrument.name] ? `110 bg-${instrument.color}-400` : `100 bg-${instrument.color}-300`
