@@ -1,52 +1,4 @@
 export const MELODIES = {
-  TEST_HI_HAT: {
-    CRASH:          '----------------',
-    HI_HAT:         '----------------',
-    HI_HAT_CLOSED:  '----------------',
-    HI_HAT_PEDAL:   '----------------',
-    SNARE:          '----x----x----x-',
-    HIGH_TOM:       '-x---x-----x----',
-    BASS:           '----------------',
-    MEDIUM_TOM:     '----------------',
-    RIDE:           '--x-------x-----',
-    FLOOR_TOM:      '---x----x-----x-',
-    SPEED: 101,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Test HiHat',
-  },
-  TEST_SNARE: {
-    CRASH:          '----------------',
-    HI_HAT:         '----------------',
-    HI_HAT_CLOSED:  '----------------',
-    HI_HAT_PEDAL:   '----------------',
-    SNARE:          '-x-x-x-x-x-x-x-x',
-    HIGH_TOM:       '----------------',
-    BASS:           '----------------',
-    MEDIUM_TOM:     '----------------',
-    RIDE:           '----------------',
-    FLOOR_TOM:      '----------------',
-    SPEED: 101,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Test Snare',
-  },
-  TEST_BASS: {
-    CRASH:          '----------------',
-    HI_HAT:         '----------------',
-    HI_HAT_CLOSED:   '----------------',
-    HI_HAT_PEDAL:   '----------------',
-    SNARE:          '----------------',
-    HIGH_TOM:       '----------------',
-    BASS:           '-x-x-x-x-x-x-x-x',
-    MEDIUM_TOM:     '----------------',
-    RIDE:           '----------------',
-    FLOOR_TOM:      '----------------',
-    SPEED: 101,
-    TACT: () => 4 / 4,
-    STEPS: 16,
-    NAME: 'Test Bass',
-  },
   PUNK_1: {
     CRASH:          '--------',
     HI_HAT:         'x-x-x-x-',
@@ -62,6 +14,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Punk 1',
+    IMAGE: 'Rock-Punk 1.png'
   },
   PUNK_2: {
     CRASH:          '--------',
@@ -78,6 +31,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Punk 2',
+    IMAGE: 'Rock-Punk 2.png'
   },
   PUNK_3: {
     CRASH:          '--------',
@@ -94,6 +48,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Punk 3',
+    IMAGE: 'Rock-Punk 3.png'
   },
   PUNK_4: {
     CRASH:          '--------',
@@ -110,6 +65,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Punk 4',
+    IMAGE: 'Rock-Punk 4.png'
   },
   ROCK_1: {
     CRASH:          '--------',
@@ -126,6 +82,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 1',
+    IMAGE: 'Rock-Rock 1.png'
   },
   ROCK_2: {
     CRASH:          '--------',
@@ -142,6 +99,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 2',
+    IMAGE: 'Rock-Rock 2.png'
   },
   ROCK_3: {
     CRASH:          '--------',
@@ -158,6 +116,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 3',
+    IMAGE: 'Rock-Rock 3.png'
   },
   ROCK_4: {
     CRASH:          '--------',
@@ -174,6 +133,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 4',
+    IMAGE: 'Rock-Rock 4.png'
   },
   ROCKABILLY_1: {
     CRASH:          '--------',
@@ -190,6 +150,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rockabilly 1',
+    IMAGE: 'Rock-Rockabilly 1.png'
   },
   ROCKABILLY_2: {
     CRASH:          '--------',
@@ -206,6 +167,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rockabilly 2',
+    IMAGE: 'Rock-Rockabilly 2.png'
   },
   ROCKABILLY_3: {
     CRASH:          '----------------',
@@ -222,6 +184,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rockabilly 3',
+    IMAGE: 'Rock-Rockabilly 3.png'
   },
   ROCK_N_ROLL_B_1: {
     CRASH:          '----------------',
@@ -238,6 +201,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock & Roll B1',
+    IMAGE: 'Rock-Rock & Roll B 1.png'
   },
   ROCK_N_ROLL_B_2: {
     CRASH:          '----------------',
@@ -254,6 +218,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock & Roll B2',
+    IMAGE: 'Rock-Rock & Roll B 2.png'
   },
   ROCK_N_ROLL_B_3: {
     CRASH:          '----------------',
@@ -270,6 +235,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock & Roll B3',
+    IMAGE: 'Rock-Rock & Roll B 3.png'
   },
   ROCK_8THS_1: {
     CRASH:          '--------',
@@ -286,6 +252,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 8ths 1',
+    IMAGE: 'Rock-Rock 8ths 1.png'
   },
   ROCK_8THS_2: {
     CRASH:          '--------',
@@ -302,6 +269,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 8ths 2',
+    IMAGE: 'Rock-Rock 8ths 2.png'
   },
   ROCK_8THS_3: {
     CRASH:          '--------',
@@ -318,6 +286,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 8ths 3',
+    IMAGE: 'Rock-Rock 8ths 3.png'
   },
   ROCK_8THS_4: {
     CRASH:          '--------',
@@ -334,6 +303,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 8ths 4',
+    IMAGE: 'Rock-Rock 8ths 4.png'
   },
   ROCK_SLOW_16THS_1: {
     CRASH:          '----------------',
@@ -350,6 +320,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock Slow 16ths 1',
+    IMAGE: 'Rock-Rock Slow 16ths 1.png'
   },
   ROCK_SLOW_16THS_2: {
     CRASH:          '----------------',
@@ -366,6 +337,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock Slow 16ths 2',
+    IMAGE: 'Rock-Rock Slow 16ths 2.png'
   },
   ROCK_SLOW_16THS_3: {
     CRASH:          '----------------',
@@ -382,6 +354,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock Slow 16ths 3',
+    IMAGE: 'Rock-Rock Slow 16ths 3.png'
   },
   ROCK_SLOW_16THS_4: {
     CRASH:          '----------------',
@@ -398,6 +371,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock Slow 16ths 4',
+    IMAGE: 'Rock-Rock Slow 16ths 4.png'
   },
   ROCK_SLOW_12_8_1: {
     CRASH:          '------------',
@@ -414,6 +388,7 @@ export const MELODIES = {
     TACT: () => 12 / 8,
     STEPS: 12,
     NAME: 'Rock Slow 12/8 1',
+    IMAGE: 'Rock-Rock Slow 12-8 1.png'
   },
   ROCK_SLOW_12_8_2: {
     CRASH:          '------------',
@@ -430,6 +405,7 @@ export const MELODIES = {
     TACT: () => 12 / 8,
     STEPS: 12,
     NAME: 'Rock Slow 12/8 2',
+    IMAGE: 'Rock-Rock Slow 12-8 2.png'
   },
   ROCK_SLOW_12_8_3: {
     CRASH:          '------------',
@@ -446,6 +422,7 @@ export const MELODIES = {
     TACT: () => 12 / 8,
     STEPS: 12,
     NAME: 'Rock Slow 12/8 3',
+    IMAGE: 'Rock-Rock Slow 12-8 3.png'
   },
   ROCK_SLOW_12_8_4: {
     CRASH:          '------------',
@@ -462,6 +439,7 @@ export const MELODIES = {
     TACT: () => 12 / 8,
     STEPS: 12,
     NAME: 'Rock Slow 12/8 4',
+    IMAGE: 'Rock-Rock Slow 12-8 4.png'
   },
   ALT_ROCK_1: {
     CRASH:          '----------------',
@@ -478,6 +456,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Alt Rock 1',
+    IMAGE: 'Rock-Alt Rock 1.png'
   },
   BEACH_MUSIC_A_1: {
     CRASH:          '--------',
@@ -494,6 +473,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Beach Music A 1',
+    IMAGE: 'Rock-Beach Music A 1.png'
   },
   BEACH_MUSIC_A_2: {
     CRASH:          '--------',
@@ -510,6 +490,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Beach Music A 2',
+    IMAGE: 'Rock-Beach Music A 2.png'
   },
   BEACH_MUSIC_A_3: {
     CRASH:          '--------',
@@ -526,6 +507,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Beach Music A 3',
+    IMAGE: 'Rock-Beach Music A 3.png'
   },
   BOOGIE_WOOGIE_1: {
     CRASH:          '----------------',
@@ -542,6 +524,7 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Boogie Woogie 1',
+    IMAGE: 'Rock-Boogie-Woogie 1.png'
   },
   BOOGIE_WOOGIE_2: {
     CRASH:          '----------------',
@@ -558,5 +541,6 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Boogie Woogie 2',
+    IMAGE: 'Rock-Boogie-Woogie 2.png'
   },
 }

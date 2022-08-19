@@ -95,6 +95,8 @@ function App() {
 
   const [isRecording, setIsRecording] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
+  const [isMelodyModalOpen, setIsMelodyModalOpen] = useState(false)
+
   const [bpm, setBpm] = useState(101)
   const [withMetronome, setWithMetronome] = useState(false)
 
@@ -153,9 +155,6 @@ function App() {
   useEffect(() => {
     if (isRunning) {
       if (MELODIES[melody][CRASH][step] === 'x') {
-        if (crashAudioRef.current) {
-          crashAudioRef.current.remove()
-        }
         const audio = new Audio(crashAudio)
         audio.play()
         audio.onended = () => audio.remove()
@@ -163,6 +162,7 @@ function App() {
       }
       if (MELODIES[melody][MEDIUM_TOM][step] === 'x') {
         if (mediumTomAudioRef.current) {
+          mediumTomAudioRef.current.pause()
           mediumTomAudioRef.current.remove()
         }
         const audio = new Audio(mediumTomAudio)
@@ -172,6 +172,7 @@ function App() {
       }
       if (MELODIES[melody][HI_HAT_PEDAL][step] === 'x') {
         if (hiHatPedalAudioRef.current) {
+          hiHatPedalAudioRef.current.pause()
           hiHatPedalAudioRef.current.remove()
         }
         const audio = new Audio(hiHatOpenAudio)
@@ -181,6 +182,7 @@ function App() {
       }
       if (MELODIES[melody][HI_HAT][step] === 'x') {
         if (hiHatAudioRef.current) {
+          hiHatAudioRef.current.pause()
           hiHatAudioRef.current.remove()
         }
         const audio = new Audio(hiHatOpenAudio)
@@ -189,9 +191,6 @@ function App() {
         hiHatAudioRef.current = audio
       }
       if (MELODIES[melody][RIDE][step] === 'x') {
-        if (rideAudioRef.current) {
-          rideAudioRef.current.remove()
-        }
         const audio = new Audio([rideAudio, rideAltAudio][randomIntFromInterval(0, 1)])
         audio.play()
         audio.onended = () => audio.remove()
@@ -199,9 +198,9 @@ function App() {
       }
       if (MELODIES[melody][SNARE][step] === 'x') {
         if (snareAudioRef.current) {
+          snareAudioRef.current.pause()
           snareAudioRef.current.remove()
         }
-
         const audio = new Audio([snareAudio, snareAltAudio][randomIntFromInterval(0, 1)])
         audio.play()
         audio.onended = () => audio.remove()
@@ -209,7 +208,16 @@ function App() {
       }
       if (MELODIES[melody][HI_HAT_CLOSED][step] === 'x') {
         if (hiHatClosedAudioRef.current) {
+          hiHatClosedAudioRef.current.pause()
           hiHatClosedAudioRef.current.remove()
+        }
+        if (hiHatAudioRef.current) {
+          hiHatAudioRef.current.pause()
+          hiHatAudioRef.current.remove()
+        }
+        if (hiHatPedalAudioRef.current) {
+          hiHatPedalAudioRef.current.pause()
+          hiHatPedalAudioRef.current.remove()
         }
         const audio = new Audio(hiHatAudio)
         audio.play()
@@ -218,6 +226,7 @@ function App() {
       }
       if (MELODIES[melody][BASS][step] === 'x') {
         if (bassAudioRef.current) {
+          bassAudioRef.current.pause()
           bassAudioRef.current.remove()
         }
         const audio = new Audio(bassDrumAudio)
@@ -227,6 +236,7 @@ function App() {
       }
       if (MELODIES[melody][HIGH_TOM][step] === 'x') {
         if (highTomAudioRef.current) {
+          highTomAudioRef.current.pause()
           highTomAudioRef.current.remove()
         }
         const audio = new Audio([highTomAudio, highTomAltAudio][randomIntFromInterval(0, 1)])
@@ -236,6 +246,7 @@ function App() {
       }
       if (MELODIES[melody][FLOOR_TOM][step] === 'x') {
         if (floorTomAudioRef.current) {
+          floorTomAudioRef.current.pause()
           floorTomAudioRef.current.remove()
         }
         const audio = new Audio([floorTomAudio, floorTomAltAudio][randomIntFromInterval(0, 1)])
@@ -522,23 +533,13 @@ function App() {
             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
             <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Metronome</span>
           </label>
-          <select
-            className={
-              'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            }
-            size={2}
-            defaultValue={'PUNK_1'}
-            onChange={(e) => {
-              setMelody(e.target.value)
-              setBpm(MELODIES[e.target.value].SPEED)
-            }}
+          <button
+            onClick={() => setIsMelodyModalOpen(true)}
+            class="block text-white bg-gray-400 hover:bg-gray-500 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            type="button"
           >
-            {Object.keys(MELODIES).map((key) => (
-              <option key={key} value={key}>
-                {MELODIES[key].NAME}
-              </option>
-            ))}
-          </select>
+            Select Melody
+          </button>
           <button onClick={() => setIsRunning(!isRunning)} className="text-gray-500 rounded-full mr-6">
             {!isRunning ? (
               <svg
@@ -573,10 +574,6 @@ function App() {
         </div>
       </div>
       <div ref={raceRef} id={'race'} className={'h-full w-full bg-white flex flex-row justify-evenly items-center'}>
-        {renderLine(1, 1)}
-        {renderLine(5, 2)}
-        {renderLine(9, 3)}
-        {renderLine(13, 4)}
         <div
           className={`h-14 absolute bottom-12 w-full border-b-slate-300 border-b-2 border-t-slate-300 border-t-2 flex flex-row items-center justify-between bg-white`}
         />
@@ -619,6 +616,34 @@ function App() {
           <p className="text-9xl text-red-600">Recording</p>
         </div>
       ) : null}
+      <div
+        className={`${
+          isMelodyModalOpen ? 'visible' : 'hidden'
+        } overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full flex flex-row justify-center items-center`}
+      >
+        <div className="relative p-4 w-full max-w-2xl h-full md:h-4/6">
+          <div className="relative bg-white rounded-lg shadow ">
+            <div className="p-6 space-y-6 overflow-scroll">
+              {[
+                Object.keys(MELODIES).map((key) => (
+                  <div
+                    key={key}
+                    onClick={() => {
+                      setMelody(key)
+                      setBpm(MELODIES[key].SPEED)
+                      setIsMelodyModalOpen(false)
+                    }}
+                    class="block p-6 bg-white rounded-lg border border-gray-200 shadow-md cursor-pointer"
+                  >
+                    <p className="text-lg font-semibold">{MELODIES[key].NAME}</p>
+                    <img src={`notes/${MELODIES[key].IMAGE}`} alt={`${MELODIES[key].NAME}`} className={'object-contain h-96'} />
+                  </div>
+                )),
+              ]}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
