@@ -6,12 +6,16 @@ import {
   beepAudio,
   crashAudio,
   floorTomAudio,
+  floorTomAltAudio,
   highTomAudio,
+  highTomAltAudio,
   hiHatAudio,
   hiHatOpenAudio,
   mediumTomAudio,
   rideAudio,
+  rideAltAudio,
   snareAudio,
+  snareAltAudio,
 } from './Audio'
 import { MELODIES } from './Melodies'
 
@@ -42,9 +46,24 @@ const AVAILABLE_INSTRUMENTS = [
 const FREQUENCY_TOLERANCE = 3
 const MAGNITUDE_MINIMUM = 10
 
+const randomIntFromInterval = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 function App() {
   const raceRef = useRef(null)
   const audioInput$ = useRef(new Subject()).current
+
+  const crashAudioRef = useRef(null)
+  const hiHatAudioRef = useRef(null)
+  const hiHatClosedAudioRef = useRef(null)
+  const hiHatPedalAudioRef = useRef(null)
+  const snareAudioRef = useRef(null)
+  const highTomAudioRef = useRef(null)
+  const bassAudioRef = useRef(null)
+  const mediumTomAudioRef = useRef(null)
+  const rideAudioRef = useRef(null)
+  const floorTomAudioRef = useRef(null)
 
   const matchCrash$ = useRef(new Subject()).current
   const matchSnare$ = useRef(new Subject()).current
@@ -76,7 +95,7 @@ function App() {
 
   const [isRecording, setIsRecording] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
-  const [bpm, setBpm] = useState(202)
+  const [bpm, setBpm] = useState(101)
   const [withMetronome, setWithMetronome] = useState(false)
 
   const [frequences, setFrequences] = useState(
@@ -134,57 +153,98 @@ function App() {
   useEffect(() => {
     if (isRunning) {
       if (MELODIES[melody][CRASH][step] === 'x') {
+        if (crashAudioRef.current) {
+          crashAudioRef.current.remove()
+        }
         const audio = new Audio(crashAudio)
         audio.play()
         audio.onended = () => audio.remove()
+        crashAudioRef.current = audio
       }
       if (MELODIES[melody][MEDIUM_TOM][step] === 'x') {
+        if (mediumTomAudioRef.current) {
+          mediumTomAudioRef.current.remove()
+        }
         const audio = new Audio(mediumTomAudio)
         audio.play()
         audio.onended = () => audio.remove()
+        mediumTomAudioRef.current = audio
       }
       if (MELODIES[melody][HI_HAT_PEDAL][step] === 'x') {
+        if (hiHatPedalAudioRef.current) {
+          hiHatPedalAudioRef.current.remove()
+        }
         const audio = new Audio(hiHatOpenAudio)
         audio.play()
         audio.onended = () => audio.remove()
+        hiHatPedalAudioRef.current = audio
       }
       if (MELODIES[melody][HI_HAT][step] === 'x') {
+        if (hiHatAudioRef.current) {
+          hiHatAudioRef.current.remove()
+        }
         const audio = new Audio(hiHatOpenAudio)
         audio.play()
         audio.onended = () => audio.remove()
+        hiHatAudioRef.current = audio
       }
       if (MELODIES[melody][RIDE][step] === 'x') {
-        const audio = new Audio(rideAudio)
+        if (rideAudioRef.current) {
+          rideAudioRef.current.remove()
+        }
+        const audio = new Audio([rideAudio, rideAltAudio][randomIntFromInterval(0, 1)])
         audio.play()
         audio.onended = () => audio.remove()
+        rideAudioRef.current = audio
       }
       if (MELODIES[melody][SNARE][step] === 'x') {
-        const audio = new Audio(snareAudio)
+        if (snareAudioRef.current) {
+          snareAudioRef.current.remove()
+        }
+
+        const audio = new Audio([snareAudio, snareAltAudio][randomIntFromInterval(0, 1)])
         audio.play()
         audio.onended = () => audio.remove()
+        snareAudioRef.current = audio
       }
       if (MELODIES[melody][HI_HAT_CLOSED][step] === 'x') {
+        if (hiHatClosedAudioRef.current) {
+          hiHatClosedAudioRef.current.remove()
+        }
         const audio = new Audio(hiHatAudio)
         audio.play()
         audio.onended = () => audio.remove()
+        hiHatClosedAudioRef.current = audio
       }
       if (MELODIES[melody][BASS][step] === 'x') {
+        if (bassAudioRef.current) {
+          bassAudioRef.current.remove()
+        }
         const audio = new Audio(bassDrumAudio)
         audio.play()
         audio.onended = () => audio.remove()
+        bassAudioRef.current = audio
       }
       if (MELODIES[melody][HIGH_TOM][step] === 'x') {
-        const audio = new Audio(highTomAudio)
+        if (highTomAudioRef.current) {
+          highTomAudioRef.current.remove()
+        }
+        const audio = new Audio([highTomAudio, highTomAltAudio][randomIntFromInterval(0, 1)])
         audio.play()
         audio.onended = () => audio.remove()
+        highTomAudioRef.current = audio
       }
       if (MELODIES[melody][FLOOR_TOM][step] === 'x') {
-        const audio = new Audio(floorTomAudio)
+        if (floorTomAudioRef.current) {
+          floorTomAudioRef.current.remove()
+        }
+        const audio = new Audio([floorTomAudio, floorTomAltAudio][randomIntFromInterval(0, 1)])
         audio.play()
         audio.onended = () => audio.remove()
+        floorTomAudioRef.current = audio
       }
     }
-  }, [step, isRunning])
+  }, [step, isRunning, melody])
 
   useEffect(() => {
     if (withMetronome && step % 4 === 0) {
