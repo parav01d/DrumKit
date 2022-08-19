@@ -134,34 +134,54 @@ function App() {
   useEffect(() => {
     if (isRunning) {
       if (MELODIES[melody][CRASH][step] === 'x') {
-        playCrash()
+        const audio = new Audio(crashAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
       if (MELODIES[melody][MEDIUM_TOM][step] === 'x') {
-        playMediumTom()
+        const audio = new Audio(mediumTomAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
       if (MELODIES[melody][HI_HAT_PEDAL][step] === 'x') {
-        playHiHatOpen()
+        const audio = new Audio(hiHatOpenAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
       if (MELODIES[melody][HI_HAT][step] === 'x') {
-        playHiHatOpen()
+        const audio = new Audio(hiHatOpenAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
       if (MELODIES[melody][RIDE][step] === 'x') {
-        playRide()
+        const audio = new Audio(rideAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
       if (MELODIES[melody][SNARE][step] === 'x') {
-        playSnare()
+        const audio = new Audio(snareAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
       if (MELODIES[melody][HI_HAT_CLOSED][step] === 'x') {
-        playHiHatClosed()
+        const audio = new Audio(hiHatAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
       if (MELODIES[melody][BASS][step] === 'x') {
-        playBassDrum()
+        const audio = new Audio(bassDrumAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
       if (MELODIES[melody][HIGH_TOM][step] === 'x') {
-        playHighTom()
+        const audio = new Audio(highTomAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
       if (MELODIES[melody][FLOOR_TOM][step] === 'x') {
-        playFloorTom()
+        const audio = new Audio(floorTomAudio)
+        audio.play()
+        audio.onended = () => audio.remove()
       }
     }
   }, [step, isRunning])
@@ -376,60 +396,6 @@ function App() {
 
   const playBeep = () => {
     const audio = new Audio(beepAudio)
-    audio.play()
-    audio.onended = () => audio.remove()
-  }
-
-  const playHiHatClosed = () => {
-    const audio = new Audio(hiHatAudio)
-    audio.play()
-    audio.onended = () => audio.remove()
-  }
-
-  const playHiHatOpen = () => {
-    const audio = new Audio(hiHatOpenAudio)
-    audio.play()
-    audio.onended = () => audio.remove()
-  }
-
-  const playHighTom = () => {
-    const audio = new Audio(highTomAudio)
-    audio.play()
-    audio.onended = () => audio.remove()
-  }
-
-  const playBassDrum = () => {
-    const audio = new Audio(bassDrumAudio)
-    audio.play()
-    audio.onended = () => audio.remove()
-  }
-
-  const playMediumTom = () => {
-    const audio = new Audio(mediumTomAudio)
-    audio.play()
-    audio.onended = () => audio.remove()
-  }
-
-  const playFloorTom = async () => {
-    const audio = new Audio(floorTomAudio)
-    audio.play()
-    audio.onended = () => audio.remove()
-  }
-
-  const playRide = async () => {
-    const audio = new Audio(rideAudio)
-    audio.play()
-    audio.onended = () => audio.remove()
-  }
-
-  const playCrash = async () => {
-    const audio = new Audio(crashAudio)
-    audio.play()
-    audio.onended = () => audio.remove()
-  }
-
-  const playSnare = async () => {
-    const audio = new Audio(snareAudio)
     audio.play()
     audio.onended = () => audio.remove()
   }
