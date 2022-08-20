@@ -472,45 +472,33 @@ function App() {
   }
 
   const marbleStyle = (isHidden) => ({
-    transition: `all ${!isHidden ? (60 / bpm / 4) * MELODIES[melody].TACT() * MELODIES[melody].STEPS : 0}s linear`,
+    transition: `all ${!isHidden ? (60000 / bpm / 4) * MELODIES[melody].TACT() * MELODIES[melody].STEPS : 0}ms linear`,
     transform: `translate(0px, ${!isHidden ? raceHeight : 0}px)`,
     visibility: `${!isHidden ? 'visible' : 'hidden'}`,
   })
 
   const renderMarble = (instrument, renderStep, color) => {
     const isHidden =
-      (renderStep === 0 && step === MELODIES[melody].STEPS - 1 && animation[step].indexOf(instrument) >= 0) ||
-      (renderStep - 1 === step && animation[renderStep - 1].indexOf(instrument) >= 0)
+      (renderStep === 0 && step === MELODIES[melody].STEPS && animation[step].indexOf(instrument) >= 0) ||
+      (renderStep === step && animation[renderStep].indexOf(instrument) >= 0)
     return (
-      <div
-        key={`${instrument}_${renderStep}`}
-        style={marbleStyle(isHidden)}
-        className={`shadow-sm shadow-slate-500 rounded-full w-14 h-14 ${color} absolute top-0`}
-      ></div>
-    )
-  }
-
-  const lineStyle = (isHidden) => ({
-    transition: `all ${!isHidden ? (60 / bpm / 4) * MELODIES[melody].TACT() * MELODIES[melody].STEPS : 0}s linear`,
-    transform: `translate(0px, ${!isHidden ? raceHeight : 0}px)`,
-    visibility: `${!isHidden ? 'visible' : 'hidden'}`,
-  })
-
-  const renderLine = (renderStep, text) => {
-    const isHidden = (renderStep === 0 && step === MELODIES[melody].STEPS - 1) || renderStep - 1 === step
-    return (
-      <div
-        style={lineStyle(isHidden)}
-        className="h-14 absolute top-0 w-full border-b-slate-300 border-b-2 border-t-slate-300 border-t-2 flex flex-row items-center justify-between "
-      >
-        <p className="text-3xl text-slate-300 ml-6">{text}</p>
-        <p className="text-3xl text-slate-300 mr-6">{text}</p>
-      </div>
+      <>
+        <div
+          key={`${instrument}_${renderStep}_shadow`}
+          style={marbleStyle(isHidden)}
+          className={`rounded-full w-14 h-14 bg-${color}-600 absolute top-20 border border-${color}-900`}
+        ></div>
+        <div
+          key={`${instrument}_${renderStep}`}
+          style={marbleStyle(isHidden)}
+          className={`rounded-full w-14 h-14 bg-${color}-300 absolute top-21 border border-${color}-900`}
+        ></div>
+      </>
     )
   }
 
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col justify-between h-full overflow-hidden">
       <div id={'menu'} className={'h-20 w-full bg-gray-100 flex flex-row justify-between items-center gap-10 z-30'}>
         <div>
           <p className="text-xl text-gray-500 ml-6">
@@ -535,7 +523,7 @@ function App() {
           </label>
           <button
             onClick={() => setIsMelodyModalOpen(true)}
-            class="block text-white bg-gray-400 hover:bg-gray-500 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            className="block text-white bg-gray-400 hover:bg-gray-500 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             type="button"
           >
             Select Melody
@@ -574,12 +562,12 @@ function App() {
         </div>
       </div>
       <div ref={raceRef} id={'race'} className={'h-full w-full bg-white flex flex-row justify-evenly items-center'}>
-        <div
-          className={`h-14 absolute bottom-12 w-full border-b-slate-300 border-b-2 border-t-slate-300 border-t-2 flex flex-row items-center justify-between bg-white`}
-        />
         {AVAILABLE_INSTRUMENTS.filter((instrument) => MELODIES[melody][instrument.name].indexOf('x') >= 0).map((instrument) => (
-          <div key={instrument.name} className={`bg-${instrument.color}-50 h-full w-32 flex flex-col items-center border-2 z-10`}>
-            {[...Array(MELODIES[melody].STEPS).keys()].map((i) => renderMarble(instrument.name, i, `bg-${instrument.color}-300`))}
+          <div
+            key={instrument.name}
+            className={`bg-${instrument.color}-50 h-full w-32 flex flex-col items-center border-l border-r border-l-${instrument.color}-400 border-r-${instrument.color}-400  z-10`}
+          >
+            {[...Array(MELODIES[melody].STEPS).keys()].map((i) => renderMarble(instrument.name, i, instrument.color))}
           </div>
         ))}
       </div>
@@ -598,16 +586,16 @@ function App() {
       </div>
       <div id={'action'} className={'h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0'}>
         {AVAILABLE_INSTRUMENTS.filter((instrument) => MELODIES[melody][instrument.name].indexOf('x') >= 0).map((instrument) => (
-          <div
-            key={instrument.name}
-            onClick={() => recordInstrument(instrument.name)}
-            className={`transition-transform transform-gpu scale-${
-              matchedInstruments[instrument.name] ? `110 bg-${instrument.color}-400` : `100 bg-${instrument.color}-300`
-            } shadow-sm shadow-slate-500 h-32 w-32 rounded-full flex flex-col justify-center items-center group z-20`}
-          >
-            <img src={`${instrument.name}.png`} alt={`${instrument.name}_image`} className="object-contain h-20 w-20 mt-1" />
-            {frequences[instrument.name] === 0 ? <p className="text-sm group-hover:hidden">Aufnehmen</p> : null}
-            <p className="text-sm hidden group-hover:block">Aufnehmen</p>
+          <div className="h-32 w-32 flex justify-center items-center">
+            <div
+              key={instrument.name}
+              onClick={() => recordInstrument(instrument.name)}
+              className={`absolute transition-transform transform-gpu scale-${
+                matchedInstruments[instrument.name] ? `110 bg-${instrument.color}-400` : `100 bg-${instrument.color}-300`
+              } border border-${instrument.color}-600 h-28 w-28 rounded-full flex flex-col justify-center items-center group z-20`}
+            >
+              <img src={`${instrument.name}.png`} alt={`${instrument.name}_image`} className="object-contain h-16 w-16" />
+            </div>
           </div>
         ))}
       </div>
@@ -633,7 +621,7 @@ function App() {
                       setBpm(MELODIES[key].SPEED)
                       setIsMelodyModalOpen(false)
                     }}
-                    class="block p-6 bg-white rounded-lg border border-gray-200 shadow-md cursor-pointer"
+                    className="block p-6 bg-white rounded-lg border border-gray-200 shadow-md cursor-pointer"
                   >
                     <p className="text-lg font-semibold">{MELODIES[key].NAME}</p>
                     <img src={`notes/${MELODIES[key].IMAGE}`} alt={`${MELODIES[key].NAME}`} className={'object-contain h-96'} />
