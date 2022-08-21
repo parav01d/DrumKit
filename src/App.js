@@ -154,13 +154,14 @@ function App() {
 
   useEffect(() => {
     if (isRunning) {
-      if (MELODIES[melody][CRASH][step] === 'x') {
+      const nextStep = (step + 1) % MELODIES[melody].STEPS
+      if (MELODIES[melody][CRASH][nextStep] === 'x') {
         const audio = new Audio(crashAudio)
         audio.play()
         audio.onended = () => audio.remove()
         crashAudioRef.current = audio
       }
-      if (MELODIES[melody][MEDIUM_TOM][step] === 'x') {
+      if (MELODIES[melody][MEDIUM_TOM][nextStep] === 'x') {
         if (mediumTomAudioRef.current) {
           mediumTomAudioRef.current.pause()
           mediumTomAudioRef.current.remove()
@@ -170,7 +171,7 @@ function App() {
         audio.onended = () => audio.remove()
         mediumTomAudioRef.current = audio
       }
-      if (MELODIES[melody][HI_HAT_PEDAL][step] === 'x') {
+      if (MELODIES[melody][HI_HAT_PEDAL][nextStep] === 'x') {
         if (hiHatPedalAudioRef.current) {
           hiHatPedalAudioRef.current.pause()
           hiHatPedalAudioRef.current.remove()
@@ -180,7 +181,7 @@ function App() {
         audio.onended = () => audio.remove()
         hiHatPedalAudioRef.current = audio
       }
-      if (MELODIES[melody][HI_HAT][step] === 'x') {
+      if (MELODIES[melody][HI_HAT][nextStep] === 'x') {
         if (hiHatAudioRef.current) {
           hiHatAudioRef.current.pause()
           hiHatAudioRef.current.remove()
@@ -190,13 +191,13 @@ function App() {
         audio.onended = () => audio.remove()
         hiHatAudioRef.current = audio
       }
-      if (MELODIES[melody][RIDE][step] === 'x') {
+      if (MELODIES[melody][RIDE][nextStep] === 'x') {
         const audio = new Audio([rideAudio, rideAltAudio][randomIntFromInterval(0, 1)])
         audio.play()
         audio.onended = () => audio.remove()
         rideAudioRef.current = audio
       }
-      if (MELODIES[melody][SNARE][step] === 'x') {
+      if (MELODIES[melody][SNARE][nextStep] === 'x') {
         if (snareAudioRef.current) {
           snareAudioRef.current.pause()
           snareAudioRef.current.remove()
@@ -206,7 +207,7 @@ function App() {
         audio.onended = () => audio.remove()
         snareAudioRef.current = audio
       }
-      if (MELODIES[melody][HI_HAT_CLOSED][step] === 'x') {
+      if (MELODIES[melody][HI_HAT_CLOSED][nextStep] === 'x') {
         if (hiHatClosedAudioRef.current) {
           hiHatClosedAudioRef.current.pause()
           hiHatClosedAudioRef.current.remove()
@@ -224,7 +225,7 @@ function App() {
         audio.onended = () => audio.remove()
         hiHatClosedAudioRef.current = audio
       }
-      if (MELODIES[melody][BASS][step] === 'x') {
+      if (MELODIES[melody][BASS][nextStep] === 'x') {
         if (bassAudioRef.current) {
           bassAudioRef.current.pause()
           bassAudioRef.current.remove()
@@ -234,7 +235,7 @@ function App() {
         audio.onended = () => audio.remove()
         bassAudioRef.current = audio
       }
-      if (MELODIES[melody][HIGH_TOM][step] === 'x') {
+      if (MELODIES[melody][HIGH_TOM][nextStep] === 'x') {
         if (highTomAudioRef.current) {
           highTomAudioRef.current.pause()
           highTomAudioRef.current.remove()
@@ -244,7 +245,7 @@ function App() {
         audio.onended = () => audio.remove()
         highTomAudioRef.current = audio
       }
-      if (MELODIES[melody][FLOOR_TOM][step] === 'x') {
+      if (MELODIES[melody][FLOOR_TOM][nextStep] === 'x') {
         if (floorTomAudioRef.current) {
           floorTomAudioRef.current.pause()
           floorTomAudioRef.current.remove()
@@ -279,7 +280,7 @@ function App() {
           { instrument: RIDE, subject$: scoreRide$ },
           { instrument: FLOOR_TOM, subject$: scoreFloorTom$ },
         ].reduce((points, { instrument, subject$ }) => {
-          if (matchedInstruments[instrument] && MELODIES[melody][instrument][step] === 'x') {
+          if (matchedInstruments[instrument] && MELODIES[melody][instrument][step % MELODIES[melody].STEPS] === 'x') {
             subject$.next(instrument)
             return points + 50
           }
@@ -359,8 +360,9 @@ function App() {
       scoreHiHatPedal$,
       scoreSnare$,
       scoreHighTom$,
-      scoreBass$,
       scoreMediumTom$,
+      scoreBass$,
+      scoreRide$,
       scoreFloorTom$,
     ].map((s$) =>
       s$.subscribe((instrument) => {
@@ -375,6 +377,7 @@ function App() {
       scoreHiHatPedal$,
       scoreSnare$,
       scoreHighTom$,
+      scoreMediumTom$,
       scoreBass$,
       scoreRide$,
       scoreFloorTom$,
