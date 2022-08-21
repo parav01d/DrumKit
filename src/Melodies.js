@@ -14,7 +14,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Punk 1',
-    IMAGE: 'Rock-Punk 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Punk 1.png',
+    DIFFICULTY: "easy",
   },
   PUNK_2: {
     CRASH:          '--------',
@@ -31,7 +33,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Punk 2',
-    IMAGE: 'Rock-Punk 2.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Punk 2.png',
+    DIFFICULTY: "easy"
   },
   PUNK_3: {
     CRASH:          '--------',
@@ -48,7 +52,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Punk 3',
-    IMAGE: 'Rock-Punk 3.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Punk 3.png',
+    DIFFICULTY: "medium",
   },
   PUNK_4: {
     CRASH:          '--------',
@@ -65,7 +71,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Punk 4',
-    IMAGE: 'Rock-Punk 4.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Punk 4.png',
+    DIFFICULTY: "medium",
   },
   ROCK_1: {
     CRASH:          '--------',
@@ -82,7 +90,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 1',
-    IMAGE: 'Rock-Rock 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock 1.png',
+    DIFFICULTY: "very easy",
   },
   ROCK_2: {
     CRASH:          '--------',
@@ -99,7 +109,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 2',
-    IMAGE: 'Rock-Rock 2.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock 2.png',
+    DIFFICULTY: "very easy",
   },
   ROCK_3: {
     CRASH:          '--------',
@@ -116,7 +128,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 3',
-    IMAGE: 'Rock-Rock 3.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock 3.png',
+    DIFFICULTY: "easy",
   },
   ROCK_4: {
     CRASH:          '--------',
@@ -133,7 +147,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 4',
-    IMAGE: 'Rock-Rock 4.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock 4.png',
+    DIFFICULTY: "easy",
   },
   ROCKABILLY_1: {
     CRASH:          '--------',
@@ -150,7 +166,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rockabilly 1',
-    IMAGE: 'Rock-Rockabilly 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rockabilly 1.png',
+    DIFFICULTY: "very easy",
   },
   ROCKABILLY_2: {
     CRASH:          '--------',
@@ -167,7 +185,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rockabilly 2',
-    IMAGE: 'Rock-Rockabilly 2.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rockabilly 2.png',
+    DIFFICULTY: "very easy",
   },
   ROCKABILLY_3: {
     CRASH:          '----------------',
@@ -184,7 +204,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rockabilly 3',
-    IMAGE: 'Rock-Rockabilly 3.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rockabilly 3.png',
+    DIFFICULTY: "easy",
   },
   ROCK_N_ROLL_B_1: {
     CRASH:          '----------------',
@@ -201,7 +223,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock & Roll B1',
-    IMAGE: 'Rock-Rock & Roll B 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock & Roll B 1.png',
+    DIFFICULTY: "medium",
   },
   ROCK_N_ROLL_B_2: {
     CRASH:          '----------------',
@@ -218,7 +242,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock & Roll B2',
-    IMAGE: 'Rock-Rock & Roll B 2.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock & Roll B 2.png',
+    DIFFICULTY: "medium",
   },
   ROCK_N_ROLL_B_3: {
     CRASH:          '----------------',
@@ -235,7 +261,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock & Roll B3',
-    IMAGE: 'Rock-Rock & Roll B 3.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock & Roll B 3.png',
+    DIFFICULTY: "easy",
   },
   ROCK_8THS_1: {
     CRASH:          '--------',
@@ -252,7 +280,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 8ths 1',
-    IMAGE: 'Rock-Rock 8ths 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock 8ths 1.png',
+    DIFFICULTY: "easy",
   },
   ROCK_8THS_2: {
     CRASH:          '--------',
@@ -269,7 +299,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 8ths 2',
-    IMAGE: 'Rock-Rock 8ths 2.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock 8ths 2.png',
+    DIFFICULTY: "easy",
   },
   ROCK_8THS_3: {
     CRASH:          '--------',
@@ -286,7 +318,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 8ths 3',
-    IMAGE: 'Rock-Rock 8ths 3.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock 8ths 3.png',
+    DIFFICULTY: "easy",
   },
   ROCK_8THS_4: {
     CRASH:          '--------',
@@ -303,7 +337,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Rock 8ths 4',
-    IMAGE: 'Rock-Rock 8ths 4.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock 8ths 4.png',
+    DIFFICULTY: "easy",
   },
   ROCK_SLOW_16THS_1: {
     CRASH:          '----------------',
@@ -320,7 +356,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock Slow 16ths 1',
-    IMAGE: 'Rock-Rock Slow 16ths 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock Slow 16ths 1.png',
+    DIFFICULTY: "medium",
   },
   ROCK_SLOW_16THS_2: {
     CRASH:          '----------------',
@@ -337,7 +375,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock Slow 16ths 2',
-    IMAGE: 'Rock-Rock Slow 16ths 2.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock Slow 16ths 2.png',
+    DIFFICULTY: "medium",
   },
   ROCK_SLOW_16THS_3: {
     CRASH:          '----------------',
@@ -354,7 +394,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock Slow 16ths 3',
-    IMAGE: 'Rock-Rock Slow 16ths 3.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock Slow 16ths 3.png',
+    DIFFICULTY: "medium",
   },
   ROCK_SLOW_16THS_4: {
     CRASH:          '----------------',
@@ -371,7 +413,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Rock Slow 16ths 4',
-    IMAGE: 'Rock-Rock Slow 16ths 4.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock Slow 16ths 4.png',
+    DIFFICULTY: "medium",
   },
   ROCK_SLOW_12_8_1: {
     CRASH:          '------------',
@@ -388,7 +432,9 @@ export const MELODIES = {
     TACT: () => 12 / 8,
     STEPS: 12,
     NAME: 'Rock Slow 12/8 1',
-    IMAGE: 'Rock-Rock Slow 12-8 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock Slow 12-8 1.png',
+    DIFFICULTY: "easy",
   },
   ROCK_SLOW_12_8_2: {
     CRASH:          '------------',
@@ -405,7 +451,9 @@ export const MELODIES = {
     TACT: () => 12 / 8,
     STEPS: 12,
     NAME: 'Rock Slow 12/8 2',
-    IMAGE: 'Rock-Rock Slow 12-8 2.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock Slow 12-8 2.png',
+    DIFFICULTY: "easy",
   },
   ROCK_SLOW_12_8_3: {
     CRASH:          '------------',
@@ -422,7 +470,8 @@ export const MELODIES = {
     TACT: () => 12 / 8,
     STEPS: 12,
     NAME: 'Rock Slow 12/8 3',
-    IMAGE: 'Rock-Rock Slow 12-8 3.png'
+    IMAGE: 'Rock-Rock Slow 12-8 3.png',
+    DIFFICULTY: "easy",
   },
   ROCK_SLOW_12_8_4: {
     CRASH:          '------------',
@@ -439,7 +488,9 @@ export const MELODIES = {
     TACT: () => 12 / 8,
     STEPS: 12,
     NAME: 'Rock Slow 12/8 4',
-    IMAGE: 'Rock-Rock Slow 12-8 4.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Rock Slow 12-8 4.png',
+    DIFFICULTY: "medium",
   },
   ALT_ROCK_1: {
     CRASH:          '----------------',
@@ -456,7 +507,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Alt Rock 1',
-    IMAGE: 'Rock-Alt Rock 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Alt Rock 1.png',
+    DIFFICULTY: "medium",
   },
   BEACH_MUSIC_A_1: {
     CRASH:          '--------',
@@ -473,7 +526,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Beach Music A 1',
-    IMAGE: 'Rock-Beach Music A 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Beach Music A 1.png',
+    DIFFICULTY: "medium",
   },
   BEACH_MUSIC_A_2: {
     CRASH:          '--------',
@@ -490,7 +545,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Beach Music A 2',
-    IMAGE: 'Rock-Beach Music A 2.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Beach Music A 2.png',
+    DIFFICULTY: "medium",
   },
   BEACH_MUSIC_A_3: {
     CRASH:          '--------',
@@ -507,7 +564,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 8,
     NAME: 'Beach Music A 3',
-    IMAGE: 'Rock-Beach Music A 3.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Beach Music A 3.png',
+    DIFFICULTY: "medium",
   },
   BOOGIE_WOOGIE_1: {
     CRASH:          '----------------',
@@ -524,7 +583,9 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Boogie Woogie 1',
-    IMAGE: 'Rock-Boogie-Woogie 1.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Boogie-Woogie 1.png',
+    DIFFICULTY: "medium",
   },
   BOOGIE_WOOGIE_2: {
     CRASH:          '----------------',
@@ -541,6 +602,141 @@ export const MELODIES = {
     TACT: () => 4 / 4,
     STEPS: 16,
     NAME: 'Boogie Woogie 2',
-    IMAGE: 'Rock-Boogie-Woogie 2.png'
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Boogie-Woogie 2.png',
+    DIFFICULTY: "medium",
   },
+  HEAVY_METAL_A_1: {
+    CRASH:          '--------',
+    HI_HAT:         'x-x-x-x-',
+    HI_HAT_CLOSED:  '--------',
+    HI_HAT_PEDAL:   '--------',
+    SNARE:          '--x---x-',
+    HIGH_TOM:       '--------',
+    BASS:           'x--x-x--',
+    MEDIUM_TOM:     '--------',
+    RIDE:           '--------',
+    FLOOR_TOM:      '--------',
+    SPEED: 115,
+    TACT: () => 4 / 4,
+    STEPS: 8,
+    NAME: 'Heavy Metal A 1',
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Heavy Metal A 1.png',
+    DIFFICULTY: "easy",
+  },
+  HEAVY_METAL_A_2: {
+    CRASH:          '--------',
+    HI_HAT:         'x-x-x-x-',
+    HI_HAT_CLOSED:  '--------',
+    HI_HAT_PEDAL:   '--------',
+    SNARE:          '--x---x-',
+    HIGH_TOM:       '--------',
+    BASS:           'xx-x-x--',
+    MEDIUM_TOM:     '--------',
+    RIDE:           '--------',
+    FLOOR_TOM:      '--------',
+    SPEED: 115,
+    TACT: () => 4 / 4,
+    STEPS: 8,
+    NAME: 'Heavy Metal A 2',
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Heavy Metal A 2.png',
+    DIFFICULTY: "medium",
+  },
+  HEAVY_METAL_A_3: {
+    CRASH:          '--------',
+    HI_HAT:         'x-x-x-x-',
+    HI_HAT_CLOSED:  '--------',
+    HI_HAT_PEDAL:   '--------',
+    SNARE:          '--x---x-',
+    HIGH_TOM:       '--------',
+    BASS:           'xx--xx--',
+    MEDIUM_TOM:     '--------',
+    RIDE:           '--------',
+    FLOOR_TOM:      '--------',
+    SPEED: 135,
+    TACT: () => 4 / 4,
+    STEPS: 8,
+    NAME: 'Heavy Metal A 3',
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Heavy Metal A 3.png',
+    DIFFICULTY: "medium",
+  },
+  HEAVY_METAL_A_4: {
+    CRASH:          '--------',
+    HI_HAT:         'x-x-x-x-',
+    HI_HAT_CLOSED:  '--------',
+    HI_HAT_PEDAL:   '--------',
+    SNARE:          '--x---x-',
+    HIGH_TOM:       '--------',
+    BASS:           'xxxxxxxx',
+    MEDIUM_TOM:     '--------',
+    RIDE:           '--------',
+    FLOOR_TOM:      '--------',
+    SPEED: 85,
+    TACT: () => 4 / 4,
+    STEPS: 8,
+    NAME: 'Heavy Metal A 4',
+    CATEGORY: "Rock",
+    IMAGE: 'Rock-Heavy Metal A 4.png',
+    DIFFICULTY: "easy",
+  },
+  BLUES_SLOW_1: {
+    CRASH:          '------------',
+    HI_HAT:         'xxxxxxxxxxxx',
+    HI_HAT_CLOSED:  '------------',
+    HI_HAT_PEDAL:   '------------',
+    SNARE:          '---x-----x--',
+    HIGH_TOM:       '------------',
+    BASS:           'x-----x-----',
+    MEDIUM_TOM:     '------------',
+    RIDE:           '------------',
+    FLOOR_TOM:      '------------',
+    SPEED: 39,
+    TACT: () => 4 / 4,
+    STEPS: 12,
+    NAME: 'Blues Slow 1',
+    CATEGORY: "Blues",
+    IMAGE: 'Blues-Blues Slow 1.png',
+    DIFFICULTY: "easy",
+  },
+  BLUES_SLOW_2: {
+    CRASH:          '------------',
+    HI_HAT:         'xxxxxxxxxxxx',
+    HI_HAT_CLOSED:  '------------',
+    HI_HAT_PEDAL:   '------------',
+    SNARE:          '---x-----x--',
+    HIGH_TOM:       '------------',
+    BASS:           'x----xx-----',
+    MEDIUM_TOM:     '------------',
+    RIDE:           '------------',
+    FLOOR_TOM:      '------------',
+    SPEED: 39,
+    TACT: () => 4 / 4,
+    STEPS: 12,
+    NAME: 'Blues Slow 2',
+    CATEGORY: "Blues",
+    IMAGE: 'Blues-Blues Slow 2.png',
+    DIFFICULTY: "easy",
+  },
+  BLUES_SLOW_3: {
+    CRASH:          '------------',
+    HI_HAT:         '------------',
+    HI_HAT_CLOSED:  '------------',
+    HI_HAT_PEDAL:   '------------',
+    SNARE:          '---x-----x--',
+    HIGH_TOM:       '------------',
+    BASS:           'x-x--xx-x---',
+    MEDIUM_TOM:     '------------',
+    RIDE:           'xxxxxxxxxxxx',
+    FLOOR_TOM:      '------------',
+    SPEED: 39,
+    TACT: () => 4 / 4,
+    STEPS: 12,
+    NAME: 'Blues Slow 3',
+    CATEGORY: "Blues",
+    IMAGE: 'Blues-Blues Slow 3.png',
+    DIFFICULTY: "medium",
+  }
 }

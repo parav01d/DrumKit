@@ -505,16 +505,6 @@ function App() {
             Punkte: <span className="text-blue-500">{points}</span>
           </p>
         </div>
-        <div>
-          <button onClick={() => setBpm(bpm - 1)} className="text-gray-500 mr-3">
-            -
-          </button>
-          <input onChange={(e) => setBpm(parseInt(e.target.value))} type="range" min="0" max="450" value={bpm} className="range w-60" />
-          <button onClick={() => setBpm(bpm + 1)} className="text-gray-500 ml-3">
-            +
-          </button>
-          <span className="text-blue-500 ml-3">{bpm} bpm</span>
-        </div>
         <div className={'bg-gray-100 flex flex-row justify-between items-center gap-10 z-30'}>
           <label className="inline-flex relative items-center cursor-pointer">
             <input onChange={() => setWithMetronome(!withMetronome)} type="checkbox" value="" id="metronome" className="sr-only peer" />
@@ -532,10 +522,10 @@ function App() {
             {!isRunning ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8"
+                className="h-10 w-10"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
+                stroke="#17a34a"
                 strokeWidth={1}
               >
                 <path
@@ -548,10 +538,10 @@ function App() {
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8"
+                className="h-10 w-10"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
+                stroke="#ee4544"
                 strokeWidth={1}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -584,7 +574,7 @@ function App() {
           </div>
         ))}
       </div>
-      <div id={'action'} className={'h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0'}>
+      <div id={'action'} className={'h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 -bottom-4'}>
         {AVAILABLE_INSTRUMENTS.filter((instrument) => MELODIES[melody][instrument.name].indexOf('x') >= 0).map((instrument) => (
           <div className="h-32 w-32 flex justify-center items-center">
             <div
@@ -613,21 +603,73 @@ function App() {
           <div className="relative bg-white rounded-lg shadow ">
             <div className="p-6 space-y-6 overflow-scroll">
               {[
-                Object.keys(MELODIES).map((key) => (
-                  <div
-                    key={key}
-                    onClick={() => {
-                      setMelody(key)
-                      setBpm(MELODIES[key].SPEED)
-                      setIsMelodyModalOpen(false)
-                    }}
-                    className="block p-6 bg-white rounded-lg border border-gray-200 shadow-md cursor-pointer"
-                  >
-                    <p className="text-lg font-semibold">{MELODIES[key].NAME}</p>
-                    <img src={`notes/${MELODIES[key].IMAGE}`} alt={`${MELODIES[key].NAME}`} className={'object-contain h-96'} />
-                  </div>
-                )),
-              ]}
+                'Rock',
+                'Blues',
+                'RnB',
+                'Reggae',
+                'Electronic',
+                'Country',
+                'Swing',
+                'Fusion',
+                'New Orleans',
+                'Argentinian',
+                'Brazilian',
+                'Cuban',
+                'Africa',
+                'Caribbean',
+                'Europe',
+              ].map((category) => (
+                <div className="flex flex-col items-center">
+                  <img src={`genre/${category}.png`} alt={`${category}`} className={'object-contain w-32 mb-6'} />
+
+                  {Object.keys(MELODIES)
+                    .filter((key) => MELODIES[key].CATEGORY === category)
+                    .map((key) => (
+                      <div
+                        key={key}
+                        onClick={() => {
+                          setMelody(key)
+                          setBpm(MELODIES[key].SPEED)
+                          setIsMelodyModalOpen(false)
+                        }}
+                        className="flex flex-row gap-5 p-6 bg-white rounded-lg border border-gray-200 shadow-md cursor-pointer"
+                      >
+                        <img src={`notes/${MELODIES[key].IMAGE}`} alt={`${MELODIES[key].NAME}`} className={'object-contain w-60 mt-2'} />
+                        <div>
+                          <p className="text-lg font-semibold text-right">{MELODIES[key].NAME}</p>
+                          <p className="text-sm">Difficulty</p>
+                          <div className="w-64 bg-gray-300 rounded-full h-2.5 dark:bg-gray-700">
+                            {MELODIES[key].DIFFICULTY === 'very easy' ? <div className="bg-green-500 h-2.5 rounded-full w-10"></div> : null}
+                            {MELODIES[key].DIFFICULTY === 'easy' ? (
+                              <div className="bg-gradient-to-r from-green-500 to-lime-500 h-2.5 rounded-full w-16"></div>
+                            ) : null}
+                            {MELODIES[key].DIFFICULTY === 'medium' ? (
+                              <div className="bg-gradient-to-r from-green-500 to-yellow-500 h-2.5 rounded-full w-28"></div>
+                            ) : null}
+                          </div>
+                          <p className="text-sm">Speed</p>
+                          <div className="w-64 bg-gray-300 rounded-full h-2.5 dark:bg-gray-700">
+                            {MELODIES[key].SPEED / MELODIES[key].STEPS > 0 && MELODIES[key].SPEED / MELODIES[key].STEPS <= 5 ? (
+                              <div className="bg-green-500 h-2.5 rounded-full w-10"></div>
+                            ) : null}
+                            {MELODIES[key].SPEED / MELODIES[key].STEPS > 5 && MELODIES[key].SPEED / MELODIES[key].STEPS <= 7.5 ? (
+                              <div className="bg-gradient-to-r from-green-500 to-lime-500 h-2.5 rounded-full w-16"></div>
+                            ) : null}
+                            {MELODIES[key].SPEED / MELODIES[key].STEPS > 7.5 && MELODIES[key].SPEED / MELODIES[key].STEPS <= 9.375 ? (
+                              <div className="bg-gradient-to-r from-green-500 to-yellow-500 h-2.5 rounded-full w-28"></div>
+                            ) : null}
+                            {MELODIES[key].SPEED / MELODIES[key].STEPS > 9.375 && MELODIES[key].SPEED / MELODIES[key].STEPS <= 11.875 ? (
+                              <div className="bg-gradient-to-r from-green-500 to-orange-500 h-2.5 rounded-full w-40"></div>
+                            ) : null}
+                            {MELODIES[key].SPEED / MELODIES[key].STEPS > 11.875 ? (
+                              <div className="bg-gradient-to-r from-green-500 to-red-500 h-2.5 rounded-full w-48"></div>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>
