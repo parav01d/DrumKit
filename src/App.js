@@ -157,6 +157,7 @@ function App() {
       const nextStep = (step + 1) % MELODIES[melody].STEPS
       if (MELODIES[melody][CRASH][nextStep] === 'x') {
         const audio = new Audio(crashAudio)
+        audio.volume = 0.5
         audio.play()
         audio.onended = () => audio.remove()
         crashAudioRef.current = audio
@@ -177,6 +178,7 @@ function App() {
           hiHatPedalAudioRef.current.remove()
         }
         const audio = new Audio(hiHatOpenAudio)
+        audio.volume = 0.5
         audio.play()
         audio.onended = () => audio.remove()
         hiHatPedalAudioRef.current = audio
@@ -187,12 +189,14 @@ function App() {
           hiHatAudioRef.current.remove()
         }
         const audio = new Audio(hiHatOpenAudio)
+        audio.volume = 0.5
         audio.play()
         audio.onended = () => audio.remove()
         hiHatAudioRef.current = audio
       }
       if (MELODIES[melody][RIDE][nextStep] === 'x') {
         const audio = new Audio([rideAudio, rideAltAudio][randomIntFromInterval(0, 1)])
+        audio.volume = 0.5
         audio.play()
         audio.onended = () => audio.remove()
         rideAudioRef.current = audio
@@ -221,6 +225,7 @@ function App() {
           hiHatPedalAudioRef.current.remove()
         }
         const audio = new Audio(hiHatAudio)
+        audio.volume = 0.5
         audio.play()
         audio.onended = () => audio.remove()
         hiHatClosedAudioRef.current = audio
