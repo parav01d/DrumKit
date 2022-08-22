@@ -494,12 +494,12 @@ function App() {
         <div
           key={`${instrument}_${renderStep}_shadow`}
           style={marbleStyle(isHidden)}
-          className={`rounded-full w-14 h-14 bg-${color}-600 absolute top-20 border border-${color}-900`}
+          className={`rounded-full w-14 h-14 bg-${color}-600 absolute mt-1 border border-${color}-900`}
         ></div>
         <div
           key={`${instrument}_${renderStep}`}
           style={marbleStyle(isHidden)}
-          className={`rounded-full w-14 h-14 bg-${color}-300 absolute top-21 border border-${color}-900`}
+          className={`rounded-full w-14 h-14 bg-${color}-300 absolute border border-${color}-900`}
         ></div>
       </>
     )
@@ -507,7 +507,12 @@ function App() {
 
   return (
     <div className="flex flex-col justify-between h-full overflow-hidden">
-      <div id={'menu'} className={'h-20 w-full bg-gray-100 flex flex-row justify-between items-center gap-10 z-30'}>
+      <div
+        id={'menu'}
+        className={`${
+          isMelodyModalOpen ? 'blur-lg' : 'blur-none'
+        } h-20 w-full bg-gray-100 flex flex-row justify-between items-center gap-10 z-30`}
+      >
         <div>
           <p className="text-xl text-gray-500 ml-6">
             Punkte: <span className="text-blue-500">{points}</span>
@@ -559,7 +564,11 @@ function App() {
           </button>
         </div>
       </div>
-      <div ref={raceRef} id={'race'} className={'h-full w-full bg-white flex flex-row justify-evenly items-center'}>
+      <div
+        ref={raceRef}
+        id={'race'}
+        className={`${isMelodyModalOpen ? 'blur-lg' : 'blur-none'} h-full w-full bg-white flex flex-row justify-evenly items-center`}
+      >
         {AVAILABLE_INSTRUMENTS.filter((instrument) => MELODIES[melody][instrument.name].indexOf('x') >= 0).map((instrument) => (
           <div
             key={instrument.name}
@@ -569,7 +578,11 @@ function App() {
           </div>
         ))}
       </div>
-      <div className={'h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0'}>
+      <div
+        className={`${
+          isMelodyModalOpen ? 'blur-lg' : 'blur-none'
+        } h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 bottom-0`}
+      >
         {AVAILABLE_INSTRUMENTS.filter((instrument) => MELODIES[melody][instrument.name].indexOf('x') >= 0).map((instrument) => (
           <div key={instrument.name} className="h-32 w-32 text-right">
             <span
@@ -582,7 +595,12 @@ function App() {
           </div>
         ))}
       </div>
-      <div id={'action'} className={'h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 -bottom-4'}>
+      <div
+        id={'action'}
+        className={`${
+          isMelodyModalOpen ? 'blur-lg' : 'blur-none'
+        } h-40 flex flex-row justify-evenly items-center absolute left-0 right-0 -bottom-4`}
+      >
         {AVAILABLE_INSTRUMENTS.filter((instrument) => MELODIES[melody][instrument.name].indexOf('x') >= 0).map((instrument) => (
           <div className="h-32 w-32 flex justify-center items-center">
             <div
@@ -605,7 +623,7 @@ function App() {
       <div
         className={`${
           isMelodyModalOpen ? 'visible' : 'hidden'
-        } overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full flex flex-row justify-center items-center`}
+        } bg-black/25 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full flex flex-row justify-center items-start`}
       >
         <div className="relative p-4 w-full max-w-2xl h-full md:h-4/6">
           <div className="relative bg-white rounded-lg shadow ">
@@ -640,7 +658,7 @@ function App() {
                           setBpm(MELODIES[key].SPEED)
                           setIsMelodyModalOpen(false)
                         }}
-                        className="flex flex-row gap-5 p-6 bg-white rounded-lg border border-gray-200 shadow-md cursor-pointer"
+                        className="flex flex-row gap-5 p-6 bg-white rounded-lg border border-gray-200 shadow-md cursor-pointer mb-3"
                       >
                         <img src={`notes/${MELODIES[key].IMAGE}`} alt={`${MELODIES[key].NAME}`} className={'object-contain w-60 mt-2'} />
                         <div>
